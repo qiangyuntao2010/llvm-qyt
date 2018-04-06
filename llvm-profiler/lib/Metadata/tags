@@ -1,0 +1,70 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+EsperantoNamer	EsperantoNamer.cpp	/^	EsperantoNamer::EsperantoNamer() : ModulePass(ID) { }$/;"	f	class:corelab::EsperantoNamer
+GET_BLK_ID	Namer.cpp	32;"	d	file:
+GET_FUNC_ID	Namer.cpp	33;"	d	file:
+GET_INST_ID	Namer.cpp	31;"	d	file:
+GET_TYPE	Namer.cpp	34;"	d	file:
+ID	EsperantoNamer.cpp	/^	char EsperantoNamer::ID = 0;$/;"	m	class:corelab::EsperantoNamer	file:
+ID	LoadNamer.cpp	/^	char LoadNamer::ID = 0;$/;"	m	class:corelab::LoadNamer	file:
+ID	Namer.cpp	/^	char Namer::ID = 0;$/;"	m	class:corelab::Namer	file:
+LEVEL	Makefile	/^LEVEL=..\/..$/;"	m
+LIBRARYNAME	Makefile	/^LIBRARYNAME=Metadata$/;"	m
+LOADABLE_MODULE	Makefile	/^LOADABLE_MODULE = 1$/;"	m
+Namer	Namer.cpp	/^	Namer::Namer() : ModulePass(ID) {}$/;"	f	class:corelab::Namer
+addMetadata	EsperantoNamer.cpp	/^	void EsperantoNamer::addMetadata() {$/;"	f	class:corelab::EsperantoNamer
+buildCalledFunctionList	EsperantoNamer.cpp	/^	void EsperantoNamer::buildCalledFunctionList(){$/;"	f	class:corelab::EsperantoNamer
+buildClassNameList	EsperantoNamer.cpp	/^	void EsperantoNamer::buildClassNameList(){$/;"	f	class:corelab::EsperantoNamer
+buildRemoteCallFunctionTable	EsperantoNamer.cpp	/^	void EsperantoNamer::buildRemoteCallFunctionTable(){$/;"	f	class:corelab::EsperantoNamer
+checkCallInsts	EsperantoNamer.cpp	/^	void EsperantoNamer::checkCallInsts(Function* F, EsperantoNamer::DeviceEntry* dev) {	$/;"	f	class:corelab::EsperantoNamer
+checkFunction	EsperantoNamer.cpp	/^	void EsperantoNamer::checkFunction() {$/;"	f	class:corelab::EsperantoNamer
+checkUseDefChains	EsperantoNamer.cpp	/^	bool EsperantoNamer::checkUseDefChains() {$/;"	f	class:corelab::EsperantoNamer
+corelab	EsperantoNamer.cpp	/^namespace corelab {$/;"	n	file:
+corelab	LoadNamer.cpp	/^namespace corelab {$/;"	n	file:
+corelab	Namer.cpp	/^namespace corelab{$/;"	n	file:
+getAnalysisUsage	EsperantoNamer.cpp	/^	void EsperantoNamer::getAnalysisUsage(AnalysisUsage &AU) const {$/;"	f	class:corelab::EsperantoNamer
+getAnalysisUsage	LoadNamer.cpp	/^	void LoadNamer::getAnalysisUsage(AnalysisUsage &AU) const {$/;"	f	class:corelab::LoadNamer
+getAnalysisUsage	Namer.cpp	/^	void Namer::getAnalysisUsage(AnalysisUsage &AU) const {$/;"	f	class:corelab::Namer
+getBlkId	Namer.cpp	/^	uint16_t Namer::getBlkId(const Instruction *I) {$/;"	f	class:corelab::Namer
+getCalledFunctionId	LoadNamer.cpp	/^	uint16_t LoadNamer::getCalledFunctionId(uint16_t id) {$/;"	f	class:corelab::LoadNamer
+getCallingFunctionId	LoadNamer.cpp	/^	uint16_t LoadNamer::getCallingFunctionId(uint16_t id) {$/;"	f	class:corelab::LoadNamer
+getClassNameInFunction	EsperantoNamer.cpp	/^	 std::string EsperantoNamer::getClassNameInFunction(StringRef functionName){$/;"	f	class:corelab::EsperantoNamer
+getDeviceInfo	EsperantoNamer.cpp	/^	EsperantoNamer::DeviceEntry* EsperantoNamer::getDeviceInfo(Function* F) {$/;"	f	class:corelab::EsperantoNamer
+getFullId	Namer.cpp	/^	uint64_t Namer::getFullId(const Instruction *I) {$/;"	f	class:corelab::Namer
+getFuncId	Namer.cpp	/^	uint16_t Namer::getFuncId(const Instruction *I) {$/;"	f	class:corelab::Namer
+getFunction	LoadNamer.cpp	/^	Function* LoadNamer::getFunction(Module &M, uint16_t funcId) {$/;"	f	class:corelab::LoadNamer
+getFunctionId	LoadNamer.cpp	/^	uint16_t LoadNamer::getFunctionId(Function &F) {$/;"	f	class:corelab::LoadNamer
+getFunctionId	LoadNamer.cpp	/^	uint16_t LoadNamer::getFunctionId(const char* fName) {$/;"	f	class:corelab::LoadNamer
+getIdCount	EsperantoNamer.cpp	/^	int EsperantoNamer::getIdCount(CallInst* call) {$/;"	f	class:corelab::EsperantoNamer
+getIdCount	EsperantoNamer.cpp	/^	int EsperantoNamer::getIdCount(DeviceEntry* dev) {$/;"	f	class:corelab::EsperantoNamer
+getInstrId	Namer.cpp	/^	uint16_t Namer::getInstrId(const Instruction *I) {$/;"	f	class:corelab::Namer
+getInstrType	Namer.cpp	/^	char Namer::getInstrType(const Instruction *I) {$/;"	f	class:corelab::Namer
+getLoopContextId	LoadNamer.cpp	/^	uint16_t LoadNamer::getLoopContextId(Loop *L, uint16_t functionId) {$/;"	f	class:corelab::LoadNamer
+getOrInsertDeviceList	EsperantoNamer.cpp	/^	EsperantoNamer::DeviceEntry* EsperantoNamer::getOrInsertDeviceList(const char* compName, const char* compType) {$/;"	f	class:corelab::EsperantoNamer
+getPlatform	EsperantoNamer.cpp	/^	EsperantoNamer::EsperantoPlatform EsperantoNamer::getPlatform(const char* compType) {$/;"	f	class:corelab::EsperantoNamer
+getPlatformAsString	EsperantoNamer.cpp	/^	const char* EsperantoNamer::getPlatformAsString(EsperantoNamer::EsperantoPlatform E) {$/;"	f	class:corelab::EsperantoNamer
+getValue	Namer.cpp	/^	Value* Namer::getValue(const Instruction *I) {$/;"	f	class:corelab::Namer
+initUseDefChains	EsperantoNamer.cpp	/^	void EsperantoNamer::initUseDefChains() {$/;"	f	class:corelab::EsperantoNamer
+initialize	Namer.cpp	/^	void Namer::initialize() {$/;"	f	class:corelab::Namer
+isCheckedOrEnroll	EsperantoNamer.cpp	/^	bool EsperantoNamer::isCheckedOrEnroll(Instruction* target) {$/;"	f	class:corelab::EsperantoNamer
+isCheckedOrEnroll	EsperantoNamer.cpp	/^	bool EsperantoNamer::isCheckedOrEnroll(Value* v) {$/;"	f	class:corelab::EsperantoNamer
+isExistOrInsert	EsperantoNamer.cpp	/^	void EsperantoNamer::isExistOrInsert(std::string cName){$/;"	f	class:corelab::EsperantoNamer
+loadMetadata	LoadNamer.cpp	/^	bool LoadNamer::loadMetadata() {$/;"	f	class:corelab::LoadNamer
+makeFunctionTable	Namer.cpp	/^	bool Namer::makeFunctionTable(Function &F)$/;"	f	class:corelab::Namer
+makeMetadata	Namer.cpp	/^	void Namer::makeMetadata(Instruction* instruction, uint64_t Id) {$/;"	f	class:corelab::Namer
+mergeID	Namer.cpp	26;"	d	file:
+printSpecs	EsperantoNamer.cpp	/^	void EsperantoNamer::printSpecs() {$/;"	f	class:corelab::EsperantoNamer
+reload	LoadNamer.cpp	/^	void LoadNamer::reload() {$/;"	f	class:corelab::LoadNamer
+reset	Namer.cpp	/^	void Namer::reset(Module& M) {$/;"	f	class:corelab::Namer
+runOnCall	Namer.cpp	/^	bool Namer::runOnCall(uint16_t bbid, uint16_t includedFunctionId, uint16_t callingFunctionId) {$/;"	f	class:corelab::Namer
+runOnFunction	Namer.cpp	/^	bool Namer::runOnFunction(Function &F) {$/;"	f	class:corelab::Namer
+runOnLoop	Namer.cpp	/^	bool Namer::runOnLoop(Loop *L, uint16_t functionId) {$/;"	f	class:corelab::Namer
+runOnModule	EsperantoNamer.cpp	/^	bool EsperantoNamer::runOnModule(Module &M) {$/;"	f	class:corelab::EsperantoNamer
+runOnModule	LoadNamer.cpp	/^	bool LoadNamer::runOnModule(Module& M)$/;"	f	class:corelab::LoadNamer
+runOnModule	Namer.cpp	/^	bool Namer::runOnModule(Module &M) {$/;"	f	class:corelab::Namer
+runOnModuleImpl	Namer.cpp	/^	void Namer::runOnModuleImpl(Module &M)$/;"	f	class:corelab::Namer
+setMaps	EsperantoNamer.cpp	/^	void EsperantoNamer::setMaps() {$/;"	f	class:corelab::EsperantoNamer

@@ -1,0 +1,87 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CAMP_CONTEXT_TREE_APPROACH	CtxObjtrace.cpp	35;"	d	file:
+CtxObjtrace	CtxObjtrace.h	/^			CtxObjtrace() : ModulePass(ID) {}$/;"	f	class:corelab::CtxObjtrace
+CtxObjtrace	CtxObjtrace.h	/^	class CtxObjtrace  : public ModulePass$/;"	c	namespace:corelab
+DEBUG_TYPE	ObjTrace.h	15;"	d
+ExternalCallList	CtxObjtrace.h	/^			typedef std::vector<const Instruction *> ExternalCallList;$/;"	t	class:corelab::CtxObjtrace
+FullID	CtxObjtrace.h	/^	typedef uint64_t FullID;$/;"	t	namespace:corelab
+FullID	ObjTrace.h	/^  typedef uint64_t FullID;$/;"	t	namespace:corelab
+GET_INSTR_ID	CtxObjtrace.cpp	37;"	d	file:
+ID	CtxObjtrace.cpp	/^char CtxObjtrace::ID = 0;$/;"	m	class:CtxObjtrace	file:
+ID	CtxObjtrace.h	/^			static char ID;$/;"	m	class:corelab::CtxObjtrace
+ID	ObjTrace.cpp	/^char ObjTrace::ID = 0;$/;"	m	class:ObjTrace	file:
+ID	ObjTrace.h	/^      static char ID;$/;"	m	class:corelab::ObjTrace
+IndirectCallList	CtxObjtrace.h	/^			typedef std::vector<const Instruction *> IndirectCallList;$/;"	t	class:corelab::CtxObjtrace
+InstrID	ObjTrace.h	/^  typedef uint16_t InstrID;$/;"	t	namespace:corelab
+LEVEL	Makefile	/^LEVEL=..\/..$/;"	m
+LIBRARYNAME	Makefile	/^LIBRARYNAME=ObjTrace$/;"	m
+LLVM_CORELAB_CTX_OBJ_H	CtxObjtrace.h	2;"	d
+LLVM_CORELAB_OBJTRACE_H	ObjTrace.h	2;"	d
+LOADABLE_MODULE	Makefile	/^LOADABLE_MODULE = 1$/;"	m
+LoopID	CtxObjtrace.h	/^			typedef CntxID LoopID;$/;"	t	class:corelab::CtxObjtrace
+ObjTrace	ObjTrace.h	/^      ObjTrace() : ModulePass(ID) {}$/;"	f	class:corelab::ObjTrace
+ObjTrace	ObjTrace.h	/^  class ObjTrace : public ModulePass {$/;"	c	namespace:corelab
+addProfilingCodeForCallSite	CtxObjtrace.cpp	/^void CtxObjtrace::addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal){$/;"	f	class:CtxObjtrace
+addProfilingCodeForLoop	CtxObjtrace.cpp	/^void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:CtxObjtrace
+addTargetComparisonCodeForIndCall	CtxObjtrace.cpp	/^Value *CtxObjtrace::addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs){$/;"	f	class:CtxObjtrace
+castTo	CtxObjtrace.cpp	/^Value* CtxObjtrace::castTo(Value* from, Value* to, InstInsertPt &out, const DataLayout *dl)$/;"	f	class:CtxObjtrace
+castTo	ObjTrace.cpp	/^Value* ObjTrace::castTo(Value* from, Value* to, InstInsertPt &out, const DataLayout *dl)$/;"	f	class:ObjTrace
+corelab	CtxObjtrace.h	/^namespace corelab$/;"	n
+corelab	ObjTrace.h	/^namespace corelab {$/;"	n
+ctxObjCallSiteBegin	CtxObjtrace.h	/^			Constant *ctxObjCallSiteBegin;$/;"	m	class:corelab::CtxObjtrace
+ctxObjCallSiteEnd	CtxObjtrace.h	/^			Constant *ctxObjCallSiteEnd;$/;"	m	class:corelab::CtxObjtrace
+ctxObjCalloc	CtxObjtrace.h	/^      Constant *ctxObjCalloc;$/;"	m	class:corelab::CtxObjtrace
+ctxObjDisableCtxtChange	CtxObjtrace.h	/^			Constant *ctxObjDisableCtxtChange;$/;"	m	class:corelab::CtxObjtrace
+ctxObjEnableCtxtChange	CtxObjtrace.h	/^			Constant *ctxObjEnableCtxtChange;$/;"	m	class:corelab::CtxObjtrace
+ctxObjFinalize	CtxObjtrace.h	/^			Constant *ctxObjFinalize;$/;"	m	class:corelab::CtxObjtrace
+ctxObjInitialize	CtxObjtrace.h	/^			Constant *ctxObjInitialize;$/;"	m	class:corelab::CtxObjtrace
+ctxObjLoadInstr	CtxObjtrace.h	/^			Constant *ctxObjLoadInstr;$/;"	m	class:corelab::CtxObjtrace
+ctxObjLoopBegin	CtxObjtrace.h	/^			Constant *ctxObjLoopBegin;$/;"	m	class:corelab::CtxObjtrace
+ctxObjLoopEnd	CtxObjtrace.h	/^			Constant *ctxObjLoopEnd;$/;"	m	class:corelab::CtxObjtrace
+ctxObjLoopNext	CtxObjtrace.h	/^			Constant *ctxObjLoopNext;$/;"	m	class:corelab::CtxObjtrace
+ctxObjMalloc	CtxObjtrace.h	/^      Constant *ctxObjMalloc;$/;"	m	class:corelab::CtxObjtrace
+ctxObjRealloc	CtxObjtrace.h	/^      Constant *ctxObjRealloc;$/;"	m	class:corelab::CtxObjtrace
+ctxObjStoreInstr	CtxObjtrace.h	/^      Constant *ctxObjStoreInstr;$/;"	m	class:corelab::CtxObjtrace
+cxtTreeBuilder	CtxObjtrace.h	/^			ContextTreeBuilder *cxtTreeBuilder;$/;"	m	class:corelab::CtxObjtrace
+externalCalls	CtxObjtrace.h	/^			ExternalCallList externalCalls;$/;"	m	class:corelab::CtxObjtrace
+getAnalysisUsage	CtxObjtrace.h	/^			virtual void getAnalysisUsage(AnalysisUsage &AU) const$/;"	f	class:corelab::CtxObjtrace
+getAnalysisUsage	ObjTrace.h	/^      virtual void getAnalysisUsage(AnalysisUsage &AU) const {$/;"	f	class:corelab::ObjTrace
+getCalledFunction_aux	CtxObjtrace.cpp	/^static Function *getCalledFunction_aux(Instruction* indCall){$/;"	f	file:
+getCalledFunction_aux	ObjTrace.cpp	/^static Function *getCalledFunction_aux(Instruction* indCall){$/;"	f	file:
+getCalledValueOfIndCall	CtxObjtrace.cpp	/^static const Value *getCalledValueOfIndCall(const Instruction* indCall){$/;"	f	file:
+getCalledValueOfIndCall	ObjTrace.cpp	/^static const Value *getCalledValueOfIndCall(const Instruction* indCall){$/;"	f	file:
+getPassName	CtxObjtrace.h	/^			const char *getPassName() const { return "Cxt-Objtrace"; }$/;"	f	class:corelab::CtxObjtrace
+getPassName	ObjTrace.h	/^      const char *getPassName() const { return "ObjTrace"; }$/;"	f	class:corelab::ObjTrace
+hookMallocFree	CtxObjtrace.cpp	/^void CtxObjtrace::hookMallocFree(){$/;"	f	class:CtxObjtrace
+hookMallocFree	ObjTrace.cpp	/^void ObjTrace::hookMallocFree(){$/;"	f	class:ObjTrace
+indirectCalls	CtxObjtrace.h	/^			IndirectCallList indirectCalls;$/;"	m	class:corelab::CtxObjtrace
+isUseOfGetElementPtrInst	CtxObjtrace.cpp	/^bool CtxObjtrace::isUseOfGetElementPtrInst(LoadInst *ld){$/;"	f	class:CtxObjtrace
+isUseOfGetElementPtrInst	ObjTrace.cpp	/^bool ObjTrace::isUseOfGetElementPtrInst(LoadInst *ld){$/;"	f	class:ObjTrace
+locIdOf_callSite	CtxObjtrace.h	/^			LocIDMapForCallSite *locIdOf_callSite;  \/\/ if key is instrID of indirect call, then value is -1$/;"	m	class:corelab::CtxObjtrace
+locIdOf_indCall	CtxObjtrace.h	/^			LocIDMapForIndirectCalls *locIdOf_indCall;$/;"	m	class:corelab::CtxObjtrace
+locIdOf_loop	CtxObjtrace.h	/^			LocIDMapForLoop *locIdOf_loop;$/;"	m	class:corelab::CtxObjtrace
+makeMetadata	CtxObjtrace.cpp	/^void CtxObjtrace::makeMetadata(Instruction* instruction, uint64_t Id) {$/;"	f	class:CtxObjtrace
+makeMetadata	ObjTrace.cpp	/^void ObjTrace::makeMetadata(Instruction* instruction, uint64_t Id) {$/;"	f	class:ObjTrace
+module	CtxObjtrace.h	/^			Module *module;$/;"	m	class:corelab::CtxObjtrace
+module	ObjTrace.h	/^      Module *module;$/;"	m	class:corelab::ObjTrace
+objTraceCalloc	ObjTrace.h	/^      Constant *objTraceCalloc;$/;"	m	class:corelab::ObjTrace
+objTraceFinalize	ObjTrace.h	/^      Constant *objTraceFinalize;$/;"	m	class:corelab::ObjTrace
+objTraceFree	ObjTrace.h	/^      Constant *objTraceFree;$/;"	m	class:corelab::ObjTrace
+objTraceInitialize	ObjTrace.h	/^      Constant *objTraceInitialize;$/;"	m	class:corelab::ObjTrace
+objTraceLoadInstr	ObjTrace.h	/^      Constant *objTraceLoadInstr;$/;"	m	class:corelab::ObjTrace
+objTraceMalloc	ObjTrace.h	/^      Constant *objTraceMalloc;$/;"	m	class:corelab::ObjTrace
+objTraceRealloc	ObjTrace.h	/^      Constant *objTraceRealloc;$/;"	m	class:corelab::ObjTrace
+objTraceStoreInstr	ObjTrace.h	/^      Constant *objTraceStoreInstr;$/;"	m	class:corelab::ObjTrace
+pCxtTree	CtxObjtrace.h	/^			std::vector<ContextTreeNode *> *pCxtTree;$/;"	m	class:corelab::CtxObjtrace
+pLoadNamer	CtxObjtrace.h	/^			LoadNamer *pLoadNamer;$/;"	m	class:corelab::CtxObjtrace
+runOnModule	CtxObjtrace.cpp	/^bool CtxObjtrace::runOnModule(Module& M) {$/;"	f	class:CtxObjtrace
+runOnModule	ObjTrace.cpp	/^bool ObjTrace::runOnModule(Module& M) {$/;"	f	class:ObjTrace
+setFunctions	CtxObjtrace.cpp	/^void CtxObjtrace::setFunctions(Module &M)$/;"	f	class:CtxObjtrace
+setFunctions	ObjTrace.cpp	/^void ObjTrace::setFunctions(Module &M) {$/;"	f	class:ObjTrace
+setIniFini	CtxObjtrace.cpp	/^void CtxObjtrace::setIniFini(Module& M)$/;"	f	class:CtxObjtrace
+setIniFini	ObjTrace.cpp	/^void ObjTrace::setIniFini(Module& M) {$/;"	f	class:ObjTrace

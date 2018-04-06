@@ -1,0 +1,114 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ADDR_MASK	ShadowMemory.hpp	21;"	d
+AllocInfo	ctxObjtraceRuntime.h	/^typedef std::set<size_t> AllocInfo;$/;"	t
+AllocInfo	objtraceruntime.h	/^typedef std::set<size_t> AllocInfo;$/;"	t
+AllocMap	ctxObjtraceRuntime.h	/^typedef std::map<FullID, AllocInfo> AllocMap;$/;"	t
+AllocMap	objtraceruntime.h	/^typedef std::map<FullID, AllocInfo> AllocMap;$/;"	t
+AllocPage	ShadowMemory.hpp	/^		static inline void AllocPage (void* addr, size_t size){$/;"	f	class:ShadowMemoryManager
+CORELAB_CAMP_RUNTIME_H	ctxObjtraceRuntime.h	2;"	d
+CntxID	ctxObjtraceRuntime.h	/^typedef uint16_t CntxID;$/;"	t
+DEBUG	objtraceruntime.h	9;"	d
+DONT_BUILD_RELINKED	Makefile	/^DONT_BUILD_RELINKED=1$/;"	m
+DumpBacktrace	ShadowMemory.hpp	/^inline static void DumpBacktrace (){$/;"	f
+FullID	ctxObjtraceRuntime.h	/^typedef uint64_t FullID;$/;"	t
+FullID	objtraceruntime.h	/^typedef uint64_t FullID;$/;"	t
+GET_BLOCK_ID	ctxObjtraceRuntime.cpp	32;"	d	file:
+GET_INSTR_ID	ctxObjtraceRuntime.cpp	33;"	d	file:
+GET_SHADOW_ADDR_HISTORY_TB	ShadowMemory.hpp	29;"	d
+GET_SHADOW_ADDR_MALLOC_MAP	ShadowMemory.hpp	30;"	d
+InstrID	ctxObjtraceRuntime.h	/^typedef uint32_t InstrID;$/;"	t
+IterRelation	ctxObjtraceRuntime.h	/^typedef uint32_t IterRelation;$/;"	t
+IterRelation	ctxObjtraceRuntime.h	/^typedef uint64_t IterRelation;$/;"	t
+IterStack	ctxObjtraceRuntime.h	/^typedef union IterStack{$/;"	u
+IterStack	ctxObjtraceRuntime.h	/^} IterStack;$/;"	t	typeref:union:IterStack
+LEVEL	Makefile	/^LEVEL=..\/..$/;"	m
+LIBRARYNAME	Makefile	/^LIBRARYNAME=objtrace$/;"	m
+LLVM_CORELAB_OBJTRACE_RUNTIME_H	objtraceruntime.h	2;"	d
+LoadStoreInfo	ctxObjtraceRuntime.h	/^typedef std::set<FullID> LoadStoreInfo;$/;"	t
+LoadStoreInfo	objtraceruntime.h	/^typedef std::set<FullID> LoadStoreInfo;$/;"	t
+LoadStoreMap	ctxObjtraceRuntime.h	/^typedef std::map<FullID, LoadStoreInfo> LoadStoreMap;$/;"	t
+LoadStoreMap	objtraceruntime.h	/^typedef std::map<FullID, LoadStoreInfo> LoadStoreMap;$/;"	t
+MAX_LINE_SIZE	ctxObjtraceRuntime.cpp	19;"	d	file:
+N_SHIFT_FOR_ONE_ELEM	ShadowMemory.hpp	26;"	d
+N_SHIFT_FOR_ONE_SIZE_T	ShadowMemory.hpp	27;"	d
+PAGE_SIZE	ShadowMemory.hpp	24;"	d
+SHADOW_MEM_H	ShadowMemory.hpp	2;"	d
+SHADOW_XMASK1	ShadowMemory.hpp	22;"	d
+SHADOW_XMASK2	ShadowMemory.hpp	23;"	d
+SHARED_LIBRARY	Makefile	/^SHARED_LIBRARY=1$/;"	m
+SIZE_ELEM	ShadowMemory.hpp	25;"	d
+STK_MAX_SIZE	ctxObjtraceRuntime.h	8;"	d
+STK_MAX_SIZE_DIV_BY_8	ctxObjtraceRuntime.h	9;"	d
+SegFaultHandler	ShadowMemory.hpp	/^		static void SegFaultHandler (int sig, siginfo_t* si, void* unused){$/;"	f	class:ShadowMemoryManager
+ShadowMemoryManager	ShadowMemory.hpp	/^class ShadowMemoryManager{$/;"	c
+X86TIMER_HPP	x86timer.hpp	2;"	d
+__GNUC__	x86timer.hpp	6;"	d
+allocIdMap	objtraceruntime.cpp	/^AllocMap *allocIdMap;$/;"	v
+clocks_per_nanosecond	x86timer.hpp	/^double clocks_per_nanosecond;$/;"	m	class:x86timer
+ctxAllocIdMap	ctxObjtraceRuntime.cpp	/^AllocMap *ctxAllocIdMap;$/;"	v
+ctxLoadIdMap	ctxObjtraceRuntime.cpp	/^LoadStoreMap *ctxLoadIdMap;$/;"	v
+ctxObjCallSiteBegin	ctxObjtraceRuntime.cpp	/^void ctxObjCallSiteBegin (CntxID cntxID) {$/;"	f
+ctxObjCallSiteEnd	ctxObjtraceRuntime.cpp	/^void ctxObjCallSiteEnd  (CntxID cntxID) {$/;"	f
+ctxObjCalloc	ctxObjtraceRuntime.cpp	/^void* ctxObjCalloc (size_t num, size_t size, InstrID instrId){$/;"	f
+ctxObjDisableCtxtChange	ctxObjtraceRuntime.cpp	/^extern "C" void ctxObjDisableCtxtChange(){$/;"	f
+ctxObjEnableCtxtChange	ctxObjtraceRuntime.cpp	/^extern "C" void ctxObjEnableCtxtChange(){$/;"	f
+ctxObjFinalize	ctxObjtraceRuntime.cpp	/^void ctxObjFinalize () {$/;"	f
+ctxObjInitialize	ctxObjtraceRuntime.cpp	/^void ctxObjInitialize () {$/;"	f
+ctxObjLoadInstr	ctxObjtraceRuntime.cpp	/^void ctxObjLoadInstr (void* addr, InstrID instrId) {$/;"	f
+ctxObjLoopBegin	ctxObjtraceRuntime.cpp	/^void ctxObjLoopBegin (CntxID cntxID) { \/\/arg is LocId$/;"	f
+ctxObjLoopEnd	ctxObjtraceRuntime.cpp	/^void ctxObjLoopEnd (CntxID cntxID) {$/;"	f
+ctxObjLoopNext	ctxObjtraceRuntime.cpp	/^void ctxObjLoopNext () {$/;"	f
+ctxObjMalloc	ctxObjtraceRuntime.cpp	/^void* ctxObjMalloc (size_t size, InstrID instrId){$/;"	f
+ctxObjRealloc	ctxObjtraceRuntime.cpp	/^void* ctxObjRealloc (void* addr, size_t size, InstrID instrId){$/;"	f
+ctxObjShadowMemorySetting	ctxObjtraceRuntime.cpp	/^void ctxObjShadowMemorySetting (void *addr, size_t size, FullID fullId){$/;"	f
+ctxObjStoreInstr	ctxObjtraceRuntime.cpp	/^void ctxObjStoreInstr (void* addr, InstrID instrId) {$/;"	f
+ctxStoreIdMap	ctxObjtraceRuntime.cpp	/^LoadStoreMap *ctxStoreIdMap;$/;"	v
+ctx_t	ctxObjtraceRuntime.cpp	/^x86timer ctx_t;$/;"	v
+currentCtx	ctxObjtraceRuntime.cpp	/^static uint32_t currentCtx;$/;"	v	file:
+disableCxtChange	ctxObjtraceRuntime.cpp	/^static uint16_t disableCxtChange; \/\/ enabled when 0$/;"	v	file:
+end_	x86timer.hpp	/^uint64_t start_,end_;$/;"	m	class:x86timer
+fend	x86timer.hpp	/^uint64_t fstart,fend;$/;"	m	class:x86timer
+fstart	x86timer.hpp	/^uint64_t fstart,fend;$/;"	m	class:x86timer
+getCtxId	ctxObjtraceRuntime.cpp	30;"	d	file:
+getFullId	ctxObjtraceRuntime.cpp	29;"	d	file:
+getInstrId	ctxObjtraceRuntime.cpp	31;"	d	file:
+globalIterStack	ctxObjtraceRuntime.cpp	/^static IterStack globalIterStack;$/;"	v	file:
+globalIterStackIdx	ctxObjtraceRuntime.cpp	/^static int globalIterStackIdx;$/;"	v	file:
+globalIterStackIdx_overflow	ctxObjtraceRuntime.cpp	/^static int globalIterStackIdx_overflow;$/;"	v	file:
+i64	ctxObjtraceRuntime.h	/^	uint64_t i64[STK_MAX_SIZE_DIV_BY_8];$/;"	m	union:IterStack
+i8	ctxObjtraceRuntime.h	/^	uint8_t i8[STK_MAX_SIZE];$/;"	m	union:IterStack
+initialize	ShadowMemory.hpp	/^		static void initialize(){$/;"	f	class:ShadowMemoryManager
+int64_t	x86timer.hpp	/^typedef __int64 int64_t;$/;"	t
+loadIdMap	objtraceruntime.cpp	/^LoadStoreMap *loadIdMap;$/;"	v
+lowestHeapSetting	objtraceruntime.cpp	/^void lowestHeapSetting (uint64_t addr){$/;"	f
+lowest_heap	objtraceruntime.cpp	/^uint64_t lowest_heap;$/;"	v
+nanosleep	x86timer.hpp	/^void nanosleep(uint64_t nanoseconds)$/;"	f	class:x86timer
+nestingDepth	ctxObjtraceRuntime.cpp	/^static unsigned nestingDepth;$/;"	v	file:
+now	x86timer.hpp	/^double now()$/;"	f	class:x86timer
+objTraceCalloc	objtraceruntime.cpp	/^objTraceCalloc (size_t num, size_t size, FullID fullId){$/;"	f
+objTraceFinalize	objtraceruntime.cpp	/^void objTraceFinalize () {$/;"	f
+objTraceFree	objtraceruntime.cpp	/^objTraceFree (void* addr, FullID fullId){$/;"	f
+objTraceInitialize	objtraceruntime.cpp	/^void objTraceInitialize () {$/;"	f
+objTraceLoadInstr	objtraceruntime.cpp	/^void objTraceLoadInstr (void* addr, FullID fullId) {$/;"	f
+objTraceMalloc	objtraceruntime.cpp	/^objTraceMalloc (size_t size, FullID fullId){$/;"	f
+objTraceRealloc	objtraceruntime.cpp	/^objTraceRealloc (void* addr, size_t size, FullID fullId){$/;"	f
+objTraceStoreInstr	objtraceruntime.cpp	/^void objTraceStoreInstr (void* addr, FullID fullId) {$/;"	f
+rdtsc	x86timer.hpp	/^inline uint64_t rdtsc() {$/;"	f
+rdtsc	x86timer.hpp	/^unsigned __int64 __cdecl rdtsc(void)$/;"	f
+shadowMemorySetting	objtraceruntime.cpp	/^void shadowMemorySetting (void *addr, size_t size, FullID fullId){$/;"	f
+start	x86timer.hpp	/^void start()$/;"	f	class:x86timer
+start_	x86timer.hpp	/^uint64_t start_,end_;$/;"	m	class:x86timer
+stop	x86timer.hpp	/^uint64_t stop()$/;"	f	class:x86timer
+storeIdMap	objtraceruntime.cpp	/^LoadStoreMap *storeIdMap;$/;"	v
+sum	x86timer.hpp	/^double sum;$/;"	m	class:x86timer
+t	objtraceruntime.cpp	/^x86timer t;$/;"	v
+times	x86timer.hpp	/^int times;$/;"	m	class:x86timer
+uint64_t	x86timer.hpp	/^typedef unsigned __int64 uint64_t;$/;"	t
+unix	x86timer.hpp	22;"	d
+x86timer	x86timer.hpp	/^class x86timer {$/;"	c
+x86timer	x86timer.hpp	/^x86timer() {$/;"	f	class:x86timer

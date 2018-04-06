@@ -1,0 +1,438 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ADDR_MASK	Qprofiler/ShadowMemory.hpp	21;"	d
+ADDR_MASK	camp/ShadowMemory.hpp	21;"	d
+ADDR_MASK	campSampling/ShadowMemory.hpp	21;"	d
+ADDR_MASK	objtrace/ShadowMemory.hpp	21;"	d
+AllocInfo	objtrace/ctxObjtraceRuntime.h	/^typedef std::set<size_t> AllocInfo;$/;"	t
+AllocInfo	objtrace/objtraceruntime.h	/^typedef std::set<size_t> AllocInfo;$/;"	t
+AllocMap	objtrace/ctxObjtraceRuntime.h	/^typedef std::map<FullID,AllocInfo> AllocMap;$/;"	t
+AllocMap	objtrace/objtraceruntime.h	/^typedef std::map<FullID, AllocInfo> AllocMap;$/;"	t
+AllocPage	Qprofiler/ShadowMemory.hpp	/^		static inline void AllocPage (void* addr, size_t size){$/;"	f	class:ShadowMemoryManager
+AllocPage	camp/ShadowMemory.hpp	/^		static inline void AllocPage (void* addr, size_t size){$/;"	f	class:ShadowMemoryManager
+AllocPage	campSampling/ShadowMemory.hpp	/^		static inline void AllocPage (void* addr, size_t size){$/;"	f	class:ShadowMemoryManager
+AllocPage	objtrace/ShadowMemory.hpp	/^		static inline void AllocPage (void* addr, size_t size){$/;"	f	class:ShadowMemoryManager
+CORELAB_CAMP_RUNTIME_H	Qprofiler/Qprofiler.h	2;"	d
+CORELAB_CAMP_RUNTIME_H	camp/campExecRuntime.h	2;"	d
+CORELAB_CAMP_RUNTIME_H	camp/campRuntime.h	2;"	d
+CORELAB_CAMP_RUNTIME_H	campSampling/campRuntime.h	2;"	d
+CORELAB_CAMP_RUNTIME_H	objtrace/ctxObjtraceRuntime.h	2;"	d
+CTXCOUNT	Qprofiler/Qprofiler.cpp	25;"	d	file:
+CampID	camp/campExecRuntime.h	/^typedef uint32_t CampID;$/;"	t
+CampID	camp/campRuntime.h	/^typedef uint32_t CampID;$/;"	t
+CampID	campSampling/campRuntime.h	/^typedef uint32_t CampID;$/;"	t
+CampIDCounterMap	camp/campRuntime.h	/^typedef std::map<CampID, uint8_t> CampIDCounterMap; \/\/for sampling$/;"	t
+CampIDCounterMap	campSampling/campRuntime.h	/^typedef std::map<CampID, uint8_t> CampIDCounterMap; \/\/for sampling$/;"	t
+CntxID	Qprofiler/Qprofiler.h	/^typedef uint16_t CntxID;$/;"	t
+CntxID	camp/campExecRuntime.h	/^typedef uint16_t CntxID;$/;"	t
+CntxID	camp/campRuntime.h	/^typedef uint16_t CntxID;$/;"	t
+CntxID	campSampling/campRuntime.h	/^typedef uint16_t CntxID;$/;"	t
+CntxID	objtrace/ctxObjtraceRuntime.h	/^typedef uint16_t CntxID;$/;"	t
+DEBUG	Qprofiler/Qprofiler.cpp	28;"	d	file:
+DEBUG	objtrace/objtraceruntime.h	10;"	d
+DIRS	Makefile	/^DIRS=\\$/;"	m
+DONT_BUILD_RELINKED	Qprofiler/Makefile	/^DONT_BUILD_RELINKED=1$/;"	m
+DONT_BUILD_RELINKED	camp/Makefile	/^DONT_BUILD_RELINKED=1$/;"	m
+DONT_BUILD_RELINKED	campSampling/Makefile	/^DONT_BUILD_RELINKED=1$/;"	m
+DONT_BUILD_RELINKED	objtrace/Makefile	/^DONT_BUILD_RELINKED=1$/;"	m
+DepID	camp/campExecRuntime.h	/^typedef uint64_t DepID;$/;"	t
+DepID	camp/campRuntime.h	/^typedef uint64_t DepID;$/;"	t
+DepID	campSampling/campRuntime.h	/^typedef uint64_t DepID;$/;"	t
+DumpBacktrace	Qprofiler/ShadowMemory.hpp	/^inline static void DumpBacktrace (){$/;"	f
+DumpBacktrace	camp/ShadowMemory.hpp	/^inline static void DumpBacktrace (){$/;"	f
+DumpBacktrace	campSampling/ShadowMemory.hpp	/^inline static void DumpBacktrace (){$/;"	f
+DumpBacktrace	objtrace/ShadowMemory.hpp	/^inline static void DumpBacktrace (){$/;"	f
+FullID	Qprofiler/Qprofiler.h	/^typedef uint64_t FullID;$/;"	t
+FullID	objtrace/ctxObjtraceRuntime.h	/^typedef uint64_t FullID;$/;"	t
+FullID	objtrace/objtraceruntime.h	/^typedef uint64_t FullID;$/;"	t
+GET_BLOCK_ID	Qprofiler/Qprofiler.cpp	43;"	d	file:
+GET_BLOCK_ID	objtrace/ctxObjtraceRuntime.cpp	41;"	d	file:
+GET_INSTR_ID	objtrace/ctxObjtraceRuntime.cpp	42;"	d	file:
+GET_SHADOW_ADDR_HISTORY_TB	Qprofiler/ShadowMemory.hpp	29;"	d
+GET_SHADOW_ADDR_HISTORY_TB	camp/ShadowMemory.hpp	29;"	d
+GET_SHADOW_ADDR_HISTORY_TB	campSampling/ShadowMemory.hpp	29;"	d
+GET_SHADOW_ADDR_HISTORY_TB	objtrace/ShadowMemory.hpp	29;"	d
+GET_SHADOW_ADDR_MALLOC_MAP	Qprofiler/ShadowMemory.hpp	30;"	d
+GET_SHADOW_ADDR_MALLOC_MAP	camp/ShadowMemory.hpp	30;"	d
+GET_SHADOW_ADDR_MALLOC_MAP	campSampling/ShadowMemory.hpp	30;"	d
+GET_SHADOW_ADDR_MALLOC_MAP	objtrace/ShadowMemory.hpp	30;"	d
+GET_inputSTR_ID	Qprofiler/Qprofiler.cpp	44;"	d	file:
+HistoryElem	camp/campRuntime.h	/^typedef struct HistoryElem {$/;"	s
+HistoryElem	camp/campRuntime.h	/^} HistoryElem;$/;"	t	typeref:struct:HistoryElem
+HistoryElem	campSampling/campRuntime.h	/^typedef struct HistoryElem {$/;"	s
+HistoryElem	campSampling/campRuntime.h	/^} HistoryElem;$/;"	t	typeref:struct:HistoryElem
+InstrID	Qprofiler/Qprofiler.h	/^typedef uint32_t InstrID;$/;"	t
+InstrID	camp/campExecRuntime.h	/^typedef uint16_t InstrID;$/;"	t
+InstrID	camp/campRuntime.h	/^typedef uint16_t InstrID;$/;"	t
+InstrID	campSampling/campRuntime.h	/^typedef uint16_t InstrID;$/;"	t
+InstrID	objtrace/ctxObjtraceRuntime.h	/^typedef uint32_t InstrID;$/;"	t
+IterRelation	Qprofiler/Qprofiler.h	/^typedef uint32_t IterRelation;$/;"	t
+IterRelation	Qprofiler/Qprofiler.h	/^typedef uint64_t IterRelation;$/;"	t
+IterRelation	camp/campRuntime.h	/^typedef uint32_t IterRelation;$/;"	t
+IterRelation	camp/campRuntime.h	/^typedef uint64_t IterRelation;$/;"	t
+IterRelation	campSampling/campRuntime.h	/^typedef uint32_t IterRelation;$/;"	t
+IterRelation	campSampling/campRuntime.h	/^typedef uint64_t IterRelation;$/;"	t
+IterRelation	objtrace/ctxObjtraceRuntime.h	/^typedef uint32_t IterRelation;$/;"	t
+IterRelation	objtrace/ctxObjtraceRuntime.h	/^typedef uint64_t IterRelation;$/;"	t
+IterStack	Qprofiler/Qprofiler.h	/^typedef union IterStack{$/;"	u
+IterStack	Qprofiler/Qprofiler.h	/^} IterStack;$/;"	t	typeref:union:IterStack
+IterStack	camp/campRuntime.h	/^typedef union IterStack{$/;"	u
+IterStack	camp/campRuntime.h	/^} IterStack;$/;"	t	typeref:union:IterStack
+IterStack	campSampling/campRuntime.h	/^typedef union IterStack{$/;"	u
+IterStack	campSampling/campRuntime.h	/^} IterStack;$/;"	t	typeref:union:IterStack
+IterStack	objtrace/ctxObjtraceRuntime.h	/^typedef union IterStack{$/;"	u
+IterStack	objtrace/ctxObjtraceRuntime.h	/^} IterStack;$/;"	t	typeref:union:IterStack
+LEVEL	Makefile	/^LEVEL=..$/;"	m
+LEVEL	Qprofiler/Makefile	/^LEVEL=..\/..$/;"	m
+LEVEL	camp/Makefile	/^LEVEL=..\/..$/;"	m
+LEVEL	campSampling/Makefile	/^LEVEL=..\/..$/;"	m
+LEVEL	objtrace/Makefile	/^LEVEL=..\/..$/;"	m
+LIBRARYNAME	Qprofiler/Makefile	/^LIBRARYNAME=Qprofiler$/;"	m
+LIBRARYNAME	camp/Makefile	/^LIBRARYNAME=campExecTime$/;"	m
+LIBRARYNAME	campSampling/Makefile	/^LIBRARYNAME=campSampling$/;"	m
+LIBRARYNAME	objtrace/Makefile	/^LIBRARYNAME=objtrace$/;"	m
+LLVM_CORELAB_OBJTRACE_RUNTIME_H	objtrace/objtraceruntime.h	2;"	d
+LoadHistoryMap	camp/campRuntime.h	/^typedef std::map<CampID, IterStack> LoadHistoryMap;$/;"	t
+LoadHistoryMap	campSampling/campRuntime.h	/^typedef std::map<CampID, IterStack> LoadHistoryMap;$/;"	t
+LoadStoreInfo	objtrace/objtraceruntime.h	/^typedef std::set<FullID> LoadStoreInfo;$/;"	t
+LoadStoreMap	objtrace/objtraceruntime.h	/^typedef std::map<FullID, LoadStoreInfo> LoadStoreMap;$/;"	t
+MAX_LINE_SIZE	camp/campExecRuntime.cpp	29;"	d	file:
+MAX_LINE_SIZE	objtrace/ctxObjtraceRuntime.cpp	24;"	d	file:
+MAX_LinputE_SIZE	Qprofiler/Qprofiler.cpp	27;"	d	file:
+MAX_PAIR	objtrace/ctxObjtraceRuntime.cpp	25;"	d	file:
+MAX_VEC	Qprofiler/Qprofiler.cpp	26;"	d	file:
+N_SHIFT_FOR_ONE_ELEM	Qprofiler/ShadowMemory.hpp	26;"	d
+N_SHIFT_FOR_ONE_ELEM	camp/ShadowMemory.hpp	26;"	d
+N_SHIFT_FOR_ONE_ELEM	campSampling/ShadowMemory.hpp	26;"	d
+N_SHIFT_FOR_ONE_ELEM	objtrace/ShadowMemory.hpp	26;"	d
+N_SHIFT_FOR_ONE_SIZE_T	Qprofiler/ShadowMemory.hpp	27;"	d
+N_SHIFT_FOR_ONE_SIZE_T	camp/ShadowMemory.hpp	27;"	d
+N_SHIFT_FOR_ONE_SIZE_T	campSampling/ShadowMemory.hpp	27;"	d
+N_SHIFT_FOR_ONE_SIZE_T	objtrace/ShadowMemory.hpp	27;"	d
+PAGE_SIZE	Qprofiler/ShadowMemory.hpp	24;"	d
+PAGE_SIZE	camp/ShadowMemory.hpp	24;"	d
+PAGE_SIZE	campSampling/ShadowMemory.hpp	24;"	d
+PAGE_SIZE	objtrace/ShadowMemory.hpp	24;"	d
+QproCallSiteBegin	Qprofiler/Qprofiler.cpp	/^void QproCallSiteBegin (CntxID cntxID) {$/;"	f
+QproCallSiteEnd	Qprofiler/Qprofiler.cpp	/^void QproCallSiteEnd  (CntxID cntxID) {$/;"	f
+QproDisableCtxtChange	Qprofiler/Qprofiler.cpp	/^extern "C" void QproDisableCtxtChange(){$/;"	f
+QproEnableCtxtChange	Qprofiler/Qprofiler.cpp	/^extern "C" void QproEnableCtxtChange(){$/;"	f
+QproFinalize	Qprofiler/Qprofiler.cpp	/^void QproFinalize () {$/;"	f
+QproInitialize	Qprofiler/Qprofiler.cpp	/^void QproInitialize () {$/;"	f
+QproLoopBegin	Qprofiler/Qprofiler.cpp	/^void QproLoopBegin (CntxID cntxID) { \/\/arg is LocId and CntxID is uint16_t$/;"	f
+QproLoopEnd	Qprofiler/Qprofiler.cpp	/^void QproLoopEnd (CntxID cntxID) {$/;"	f
+QproLoopNext	Qprofiler/Qprofiler.cpp	/^void QproLoopNext () {$/;"	f
+QproShadowMemorySetting	Qprofiler/Qprofiler.cpp	/^void QproShadowMemorySetting (void *addr, size_t size, FullID fullId){$/;"	f
+RANDOM_SAMPLING_CYCLE	campSampling/campRuntime.cpp	28;"	d	file:
+SAMPLING_THRESHOLD	camp/campRuntime.h	42;"	d
+SAMPLING_THRESHOLD	campSampling/campRuntime.h	42;"	d
+SHADOW_MEM_H	Qprofiler/ShadowMemory.hpp	2;"	d
+SHADOW_MEM_H	camp/ShadowMemory.hpp	2;"	d
+SHADOW_MEM_H	campSampling/ShadowMemory.hpp	2;"	d
+SHADOW_MEM_H	objtrace/ShadowMemory.hpp	2;"	d
+SHADOW_XMASK1	Qprofiler/ShadowMemory.hpp	22;"	d
+SHADOW_XMASK1	camp/ShadowMemory.hpp	22;"	d
+SHADOW_XMASK1	campSampling/ShadowMemory.hpp	22;"	d
+SHADOW_XMASK1	objtrace/ShadowMemory.hpp	22;"	d
+SHADOW_XMASK2	Qprofiler/ShadowMemory.hpp	23;"	d
+SHADOW_XMASK2	camp/ShadowMemory.hpp	23;"	d
+SHADOW_XMASK2	campSampling/ShadowMemory.hpp	23;"	d
+SHADOW_XMASK2	objtrace/ShadowMemory.hpp	23;"	d
+SHARED_LIBRARY	Qprofiler/Makefile	/^SHARED_LIBRARY=1$/;"	m
+SHARED_LIBRARY	camp/Makefile	/^SHARED_LIBRARY=1$/;"	m
+SHARED_LIBRARY	campSampling/Makefile	/^SHARED_LIBRARY=1$/;"	m
+SHARED_LIBRARY	objtrace/Makefile	/^SHARED_LIBRARY=1$/;"	m
+SIZE_ELEM	Qprofiler/ShadowMemory.hpp	25;"	d
+SIZE_ELEM	camp/ShadowMemory.hpp	25;"	d
+SIZE_ELEM	campSampling/ShadowMemory.hpp	25;"	d
+SIZE_ELEM	objtrace/ShadowMemory.hpp	25;"	d
+STK_MAX_SIZE	Qprofiler/Qprofiler.h	9;"	d
+STK_MAX_SIZE	camp/campRuntime.h	7;"	d
+STK_MAX_SIZE	campSampling/campRuntime.h	7;"	d
+STK_MAX_SIZE	objtrace/ctxObjtraceRuntime.h	9;"	d
+STK_MAX_SIZE_DIV_BY_8	Qprofiler/Qprofiler.h	10;"	d
+STK_MAX_SIZE_DIV_BY_8	camp/campRuntime.h	8;"	d
+STK_MAX_SIZE_DIV_BY_8	campSampling/campRuntime.h	8;"	d
+STK_MAX_SIZE_DIV_BY_8	objtrace/ctxObjtraceRuntime.h	10;"	d
+SegFaultHandler	Qprofiler/ShadowMemory.hpp	/^		static void SegFaultHandler (int sig, siginfo_t* si, void* unused){$/;"	f	class:ShadowMemoryManager
+SegFaultHandler	camp/ShadowMemory.hpp	/^		static void SegFaultHandler (int sig, siginfo_t* si, void* unused){$/;"	f	class:ShadowMemoryManager
+SegFaultHandler	campSampling/ShadowMemory.hpp	/^		static void SegFaultHandler (int sig, siginfo_t* si, void* unused){$/;"	f	class:ShadowMemoryManager
+SegFaultHandler	objtrace/ShadowMemory.hpp	/^		static void SegFaultHandler (int sig, siginfo_t* si, void* unused){$/;"	f	class:ShadowMemoryManager
+ShadowMemoryManager	Qprofiler/ShadowMemory.hpp	/^class ShadowMemoryManager{$/;"	c
+ShadowMemoryManager	camp/ShadowMemory.hpp	/^class ShadowMemoryManager{$/;"	c
+ShadowMemoryManager	campSampling/ShadowMemory.hpp	/^class ShadowMemoryManager{$/;"	c
+ShadowMemoryManager	objtrace/ShadowMemory.hpp	/^class ShadowMemoryManager{$/;"	c
+StoreHistoryElem	camp/campRuntime.h	/^typedef struct StoreHistoryElem {$/;"	s
+StoreHistoryElem	camp/campRuntime.h	/^} StoreHistoryElem;$/;"	t	typeref:struct:StoreHistoryElem
+StoreHistoryElem	campSampling/campRuntime.h	/^typedef struct StoreHistoryElem {$/;"	s
+StoreHistoryElem	campSampling/campRuntime.h	/^} StoreHistoryElem;$/;"	t	typeref:struct:StoreHistoryElem
+String	Qprofiler/Qprofiler.cpp	/^typedef std::string String;$/;"	t	file:
+String	Qprofiler/Qprofiler.h	/^typedef std::string String;$/;"	t
+TimectxMap	objtrace/ctxObjtraceRuntime.h	/^typedef std::map<std::string,uint64_t> TimectxMap;$/;"	t
+X86TIMER_HPP	Qprofiler/x86timer.hpp	2;"	d
+X86TIMER_HPP	camp/x86timer.hpp	2;"	d
+X86TIMER_HPP	objtrace/x86timer.hpp	2;"	d
+_CTX	objtrace/ctxObjtraceRuntime.h	/^typedef struct _CTX{$/;"	s
+_INPUT	Qprofiler/Qprofiler.h	/^typedef struct _INPUT$/;"	s
+_TIME_CTX	Qprofiler/Qprofiler.h	/^typedef struct _TIME_CTX$/;"	s
+_X86_	camp/campExecRuntime.cpp	18;"	d	file:
+__GNUC__	Qprofiler/x86timer.hpp	6;"	d
+__GNUC__	camp/x86timer.hpp	6;"	d
+__GNUC__	objtrace/x86timer.hpp	6;"	d
+allocIdMap	objtrace/objtraceruntime.cpp	/^AllocMap *allocIdMap;$/;"	v
+armtimer	camp/armtimer.hpp	/^class armtimer{$/;"	c
+campCallSiteBegin	camp/campRuntime.cpp	/^void campCallSiteBegin (CntxID cntxID) {$/;"	f
+campCallSiteBegin	campSampling/campRuntime.cpp	/^void campCallSiteBegin (CntxID cntxID) {$/;"	f
+campCallSiteEnd	camp/campRuntime.cpp	/^void campCallSiteEnd  (CntxID cntxID) {$/;"	f
+campCallSiteEnd	campSampling/campRuntime.cpp	/^void campCallSiteEnd  (CntxID cntxID) {$/;"	f
+campCalloc	camp/campRuntime.cpp	/^campCalloc (size_t size, size_t num){$/;"	f
+campCalloc	campSampling/campRuntime.cpp	/^campCalloc (size_t size, size_t num){$/;"	f
+campDisableCtxtChange	camp/campRuntime.cpp	/^extern "C" void campDisableCtxtChange(){$/;"	f
+campDisableCtxtChange	campSampling/campRuntime.cpp	/^extern "C" void campDisableCtxtChange(){$/;"	f
+campEnableCtxtChange	camp/campRuntime.cpp	/^extern "C" void campEnableCtxtChange(){$/;"	f
+campEnableCtxtChange	campSampling/campRuntime.cpp	/^extern "C" void campEnableCtxtChange(){$/;"	f
+campExecCallSiteBegin	camp/campExecRuntime.cpp	/^void campExecCallSiteBegin (CntxID cntxID) {$/;"	f
+campExecCallSiteEnd	camp/campExecRuntime.cpp	/^void campExecCallSiteEnd  (CntxID cntxID) {$/;"	f
+campExecDisableCtxtChange	camp/campExecRuntime.cpp	/^extern "C" void campExecDisableCtxtChange(){$/;"	f
+campExecEnableCtxtChange	camp/campExecRuntime.cpp	/^extern "C" void campExecEnableCtxtChange(){$/;"	f
+campExecFinalize	camp/campExecRuntime.cpp	/^void campExecFinalize (bool removeLoop) {	\/\/ edit later$/;"	f
+campExecInitialize	camp/campExecRuntime.cpp	/^void campExecInitialize (size_t ldrCnt, size_t strCnt, size_t callCnt, size_t loopCnt, size_t maxLoopDepth) {$/;"	f
+campExecLoopBegin	camp/campExecRuntime.cpp	/^void campExecLoopBegin (CntxID cntxID) { \/\/arg is LocId$/;"	f
+campExecLoopEnd	camp/campExecRuntime.cpp	/^void campExecLoopEnd (CntxID cntxID) {$/;"	f
+campExecLoopNext	camp/campExecRuntime.cpp	/^void campExecLoopNext () {$/;"	f
+campFinalize	camp/campRuntime.cpp	/^void campFinalize () {$/;"	f
+campFinalize	campSampling/campRuntime.cpp	/^void campFinalize () {$/;"	f
+campFree	camp/campRuntime.cpp	/^campFree (void* addr){$/;"	f
+campFree	campSampling/campRuntime.cpp	/^campFree (void* addr){$/;"	f
+campID	camp/campRuntime.h	/^	CampID campID;$/;"	m	struct:StoreHistoryElem
+campID	campSampling/campRuntime.h	/^	CampID campID;$/;"	m	struct:StoreHistoryElem
+campInitialize	camp/campRuntime.cpp	/^void campInitialize (size_t ldrCnt, size_t strCnt, size_t callCnt, size_t loopCnt, size_t maxLoopDepth) {$/;"	f
+campInitialize	campSampling/campRuntime.cpp	/^void campInitialize (size_t ldrCnt, size_t strCnt, size_t callCnt, size_t loopCnt, size_t maxLoopDepth) {$/;"	f
+campLoadInstr	camp/campRuntime.cpp	/^void campLoadInstr (void* addr, InstrID instrID) {$/;"	f
+campLoadInstr	campSampling/campRuntime.cpp	/^void campLoadInstr (void* addr, InstrID instrID) {$/;"	f
+campLoopBegin	camp/campRuntime.cpp	/^void campLoopBegin (CntxID cntxID) {$/;"	f
+campLoopBegin	campSampling/campRuntime.cpp	/^void campLoopBegin (CntxID cntxID) {$/;"	f
+campLoopEnd	camp/campRuntime.cpp	/^void campLoopEnd (CntxID cntxID) {$/;"	f
+campLoopEnd	campSampling/campRuntime.cpp	/^void campLoopEnd (CntxID cntxID) {$/;"	f
+campLoopNext	camp/campRuntime.cpp	/^void campLoopNext () {$/;"	f
+campLoopNext	campSampling/campRuntime.cpp	/^void campLoopNext () {$/;"	f
+campMalloc	camp/campRuntime.cpp	/^campMalloc (size_t size){$/;"	f
+campMalloc	campSampling/campRuntime.cpp	/^campMalloc (size_t size){$/;"	f
+campRealloc	camp/campRuntime.cpp	/^campRealloc (void* addr, size_t size){$/;"	f
+campRealloc	campSampling/campRuntime.cpp	/^campRealloc (void* addr, size_t size){$/;"	f
+campStoreInstr	camp/campRuntime.cpp	/^void campStoreInstr (void* addr, InstrID instrID) {$/;"	f
+campStoreInstr	campSampling/campRuntime.cpp	/^void campStoreInstr (void* addr, InstrID instrID) {$/;"	f
+clocks_per_nanosecond	Qprofiler/x86timer.hpp	/^double clocks_per_nanosecond;$/;"	m	class:x86timer
+clocks_per_nanosecond	camp/x86timer.hpp	/^double clocks_per_nanosecond;$/;"	m	class:x86timer
+clocks_per_nanosecond	objtrace/x86timer.hpp	/^double clocks_per_nanosecond;$/;"	m	class:x86timer
+ctx	Qprofiler/Qprofiler.h	/^	FullID ctx;$/;"	m	struct:_TIME_CTX
+ctx	objtrace/ctxObjtraceRuntime.h	/^	uint32_t ctx;$/;"	m	struct:_CTX
+ctxAllocIdMap	objtrace/ctxObjtraceRuntime.cpp	/^AllocMap *ctxAllocIdMap;$/;"	v
+ctxObjCallSiteBegin	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjCallSiteBegin (CntxID cntxID) {$/;"	f
+ctxObjCallSiteEnd	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjCallSiteEnd  (CntxID cntxID) {$/;"	f
+ctxObjCalloc	objtrace/ctxObjtraceRuntime.cpp	/^void* ctxObjCalloc (size_t num, size_t size, InstrID instrId){$/;"	f
+ctxObjDisableCtxtChange	objtrace/ctxObjtraceRuntime.cpp	/^extern "C" void ctxObjDisableCtxtChange(){$/;"	f
+ctxObjEnableCtxtChange	objtrace/ctxObjtraceRuntime.cpp	/^extern "C" void ctxObjEnableCtxtChange(){$/;"	f
+ctxObjFinalize	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjFinalize () {$/;"	f
+ctxObjInitialize	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjInitialize () {$/;"	f
+ctxObjLoadInstr	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjLoadInstr (void* addr, InstrID instrId) {$/;"	f
+ctxObjLoopBegin	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjLoopBegin (CntxID cntxID) { \/\/arg is LocId and CntxID is uint16_t$/;"	f
+ctxObjLoopEnd	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjLoopEnd (CntxID cntxID) {$/;"	f
+ctxObjLoopNext	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjLoopNext () {$/;"	f
+ctxObjMalloc	objtrace/ctxObjtraceRuntime.cpp	/^void* ctxObjMalloc (size_t size, InstrID instrId){$/;"	f
+ctxObjRealloc	objtrace/ctxObjtraceRuntime.cpp	/^void* ctxObjRealloc (void* addr, size_t size, InstrID instrId){$/;"	f
+ctxObjShadowMemorySetting	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjShadowMemorySetting (void *addr, size_t size, FullID fullId){$/;"	f
+ctxObjStoreInstr	objtrace/ctxObjtraceRuntime.cpp	/^void ctxObjStoreInstr (void* addr, InstrID instrId) {$/;"	f
+ctx_list	objtrace/ctxObjtraceRuntime.h	/^}ctx_list;$/;"	t	typeref:struct:_CTX
+ctx_t	Qprofiler/Qprofiler.cpp	/^x86timer ctx_t;$/;"	v
+ctx_t	objtrace/ctxObjtraceRuntime.cpp	/^x86timer ctx_t;$/;"	v
+ctxid	Qprofiler/Qprofiler.h	/^	uint32_t ctxid;$/;"	m	struct:_INPUT
+ctxpair	objtrace/ctxObjtraceRuntime.cpp	/^static ctx_list* ctxpair;$/;"	v	file:
+currentCtx	Qprofiler/Qprofiler.cpp	/^static uint32_t currentCtx;$/;"	v	file:
+currentCtx	camp/campRuntime.cpp	/^static CntxID currentCtx;$/;"	v	file:
+currentCtx	campSampling/campRuntime.cpp	/^static CntxID currentCtx;$/;"	v	file:
+currentCtx	objtrace/ctxObjtraceRuntime.cpp	/^static uint32_t currentCtx;$/;"	v	file:
+depTable	camp/campRuntime.cpp	/^static std::unordered_map<DepID, IterRelation> *depTable=NULL;$/;"	v	file:
+depTable	campSampling/campRuntime.cpp	/^static std::unordered_map<DepID, IterRelation> *depTable=NULL;$/;"	v	file:
+disableCtxtChange	campSampling/campRuntime.cpp	/^static uint16_t disableCtxtChange;$/;"	v	file:
+disableCxtChange	Qprofiler/Qprofiler.cpp	/^static uint16_t disableCxtChange; \/\/ enabled when 0$/;"	v	file:
+disableCxtChange	camp/campRuntime.cpp	/^static uint16_t disableCxtChange; \/\/ enabled when 0$/;"	v	file:
+disableCxtChange	objtrace/ctxObjtraceRuntime.cpp	/^static uint16_t disableCxtChange; \/\/ enabled when 0$/;"	v	file:
+dumpDependenceTable	camp/campRuntime.cpp	/^void dumpDependenceTable() {$/;"	f
+dumpDependenceTable	campSampling/campRuntime.cpp	/^void dumpDependenceTable() {$/;"	f
+dur	Qprofiler/Qprofiler.cpp	/^static double dur;$/;"	v	file:
+end	Qprofiler/Qprofiler.cpp	/^static clock_t end;$/;"	v	file:
+end_	Qprofiler/x86timer.hpp	/^uint64_t start_,end_;$/;"	m	class:x86timer
+end_	camp/x86timer.hpp	/^uint64_t start_,end_;$/;"	m	class:x86timer
+end_	objtrace/x86timer.hpp	/^uint64_t start_,end_;$/;"	m	class:x86timer
+end_count	camp/armtimer.hpp	/^unsigned int end_count;$/;"	m	class:armtimer
+end_time	camp/armtimer.hpp	/^struct timeval start_time, end_time;$/;"	m	class:armtimer	typeref:struct:armtimer::
+execTimeOfContext	camp/campExecRuntime.cpp	/^std::unordered_map<CntxID, double> *execTimeOfContext;$/;"	v
+execTimeOfContext	camp/campExecRuntime.cpp	/^std::unordered_map<CntxID, unsigned int> *execTimeOfContext;$/;"	v
+exec_currentCtx	camp/campExecRuntime.cpp	/^static CntxID exec_currentCtx;$/;"	v	file:
+exec_disableCxtChange	camp/campExecRuntime.cpp	/^static uint16_t exec_disableCxtChange; \/\/ enabled when 0$/;"	v	file:
+fend	Qprofiler/x86timer.hpp	/^uint64_t fstart,fend;$/;"	m	class:x86timer
+fend	camp/x86timer.hpp	/^uint64_t fstart,fend;$/;"	m	class:x86timer
+fend	objtrace/x86timer.hpp	/^uint64_t fstart,fend;$/;"	m	class:x86timer
+fstart	Qprofiler/x86timer.hpp	/^uint64_t fstart,fend;$/;"	m	class:x86timer
+fstart	camp/x86timer.hpp	/^uint64_t fstart,fend;$/;"	m	class:x86timer
+fstart	objtrace/x86timer.hpp	/^uint64_t fstart,fend;$/;"	m	class:x86timer
+getCtxId	Qprofiler/Qprofiler.cpp	41;"	d	file:
+getCtxId	objtrace/ctxObjtraceRuntime.cpp	39;"	d	file:
+getFullId	Qprofiler/Qprofiler.cpp	40;"	d	file:
+getFullId	objtrace/ctxObjtraceRuntime.cpp	38;"	d	file:
+getInstrId	Qprofiler/Qprofiler.cpp	42;"	d	file:
+getInstrId	objtrace/ctxObjtraceRuntime.cpp	40;"	d	file:
+get_cyclecount	camp/armtimer.hpp	/^unsigned int get_cyclecount (void)$/;"	f	class:armtimer
+get_result_count	camp/armtimer.hpp	/^unsigned int get_result_count (void)$/;"	f	class:armtimer
+get_result_time	camp/armtimer.hpp	/^double get_result_time (void)$/;"	f	class:armtimer
+globalIterStack	Qprofiler/Qprofiler.cpp	/^static IterStack globalIterStack;$/;"	v	file:
+globalIterStack	camp/campRuntime.cpp	/^static IterStack globalIterStack;$/;"	v	file:
+globalIterStack	campSampling/campRuntime.cpp	/^static IterStack globalIterStack;$/;"	v	file:
+globalIterStack	objtrace/ctxObjtraceRuntime.cpp	/^static IterStack globalIterStack;$/;"	v	file:
+globalIterStackIdx	Qprofiler/Qprofiler.cpp	/^static int globalIterStackIdx;$/;"	v	file:
+globalIterStackIdx	camp/campRuntime.cpp	/^static int globalIterStackIdx;$/;"	v	file:
+globalIterStackIdx	campSampling/campRuntime.cpp	/^static int globalIterStackIdx;$/;"	v	file:
+globalIterStackIdx	objtrace/ctxObjtraceRuntime.cpp	/^static int globalIterStackIdx;$/;"	v	file:
+globalIterStackIdx_overflow	Qprofiler/Qprofiler.cpp	/^static int globalIterStackIdx_overflow;$/;"	v	file:
+globalIterStackIdx_overflow	camp/campRuntime.cpp	/^static int globalIterStackIdx_overflow;$/;"	v	file:
+globalIterStackIdx_overflow	campSampling/campRuntime.cpp	/^static int globalIterStackIdx_overflow;$/;"	v	file:
+globalIterStackIdx_overflow	objtrace/ctxObjtraceRuntime.cpp	/^static int globalIterStackIdx_overflow;$/;"	v	file:
+guard_ctx	Qprofiler/Qprofiler.cpp	/^static uint32_t guard_ctx;$/;"	v	file:
+i64	Qprofiler/Qprofiler.h	/^	uint64_t i64[STK_MAX_SIZE_DIV_BY_8];$/;"	m	union:IterStack
+i64	camp/campRuntime.h	/^	uint64_t i64[STK_MAX_SIZE_DIV_BY_8];$/;"	m	union:IterStack
+i64	campSampling/campRuntime.h	/^	uint64_t i64[STK_MAX_SIZE_DIV_BY_8];$/;"	m	union:IterStack
+i64	objtrace/ctxObjtraceRuntime.h	/^	uint64_t i64[STK_MAX_SIZE_DIV_BY_8];$/;"	m	union:IterStack
+i8	Qprofiler/Qprofiler.h	/^	uint8_t i8[STK_MAX_SIZE];$/;"	m	union:IterStack
+i8	camp/campRuntime.h	/^	uint8_t i8[STK_MAX_SIZE];$/;"	m	union:IterStack
+i8	campSampling/campRuntime.h	/^	uint8_t i8[STK_MAX_SIZE];$/;"	m	union:IterStack
+i8	objtrace/ctxObjtraceRuntime.h	/^	uint8_t i8[STK_MAX_SIZE];$/;"	m	union:IterStack
+in_read	Qprofiler/Qprofiler.cpp	/^void in_read(inputstr* instr,FILE *input)$/;"	f
+init_perfcounter	camp/armtimer.hpp	/^void init_perfcounter (int do_reset, int enable_divider)                               $/;"	f	class:armtimer
+initialize	Qprofiler/ShadowMemory.hpp	/^		static void initialize(){$/;"	f	class:ShadowMemoryManager
+initialize	camp/ShadowMemory.hpp	/^		static void initialize(){$/;"	f	class:ShadowMemoryManager
+initialize	campSampling/ShadowMemory.hpp	/^		static void initialize(){$/;"	f	class:ShadowMemoryManager
+initialize	objtrace/ShadowMemory.hpp	/^		static void initialize(){$/;"	f	class:ShadowMemoryManager
+input	Qprofiler/Qprofiler.cpp	/^FILE *input;$/;"	v
+inputstr	Qprofiler/Qprofiler.h	/^} inputstr;$/;"	t	typeref:struct:_INPUT
+insertDep	camp/campRuntime.cpp	/^static void insertDep(CampID srcCampID, CampID dstCampID, uint8_t* oldIter){$/;"	f	file:
+insertDep	campSampling/campRuntime.cpp	/^static void insertDep(CampID srcCampID, CampID dstCampID, uint8_t* oldIter){$/;"	f	file:
+instr	Qprofiler/Qprofiler.cpp	/^static inputstr* instr;$/;"	v	file:
+int64_t	Qprofiler/x86timer.hpp	/^typedef __int64 int64_t;$/;"	t
+int64_t	camp/x86timer.hpp	/^typedef __int64 int64_t;$/;"	t
+int64_t	objtrace/x86timer.hpp	/^typedef __int64 int64_t;$/;"	t
+isInter	camp/campRuntime.cpp	31;"	d	file:
+isInter	campSampling/campRuntime.cpp	44;"	d	file:
+isIntra	camp/campRuntime.cpp	30;"	d	file:
+isIntra	campSampling/campRuntime.cpp	43;"	d	file:
+is_exist	Qprofiler/Qprofiler.cpp	/^bool is_exist(uint32_t ctx)$/;"	f
+iterStack	camp/campRuntime.h	/^	IterStack iterStack;$/;"	m	struct:StoreHistoryElem
+iterStack	campSampling/campRuntime.h	/^	IterStack iterStack;$/;"	m	struct:StoreHistoryElem
+loadIdMap	objtrace/objtraceruntime.cpp	/^LoadStoreMap *loadIdMap;$/;"	v
+lowestHeapSetting	objtrace/objtraceruntime.cpp	/^void lowestHeapSetting (uint64_t addr){$/;"	f
+lowest_heap	objtrace/objtraceruntime.cpp	/^uint64_t lowest_heap;$/;"	v
+mcount	objtrace/ctxObjtraceRuntime.h	/^	uint64_t mcount;$/;"	m	struct:_CTX
+nLoadInvo	campSampling/campRuntime.cpp	/^static uint64_t nLoadInvo; \/\/sampling ratio stat$/;"	v	file:
+nSampledLoadInvo	campSampling/campRuntime.cpp	/^static uint64_t nSampledLoadInvo; \/\/sampling ratio stat$/;"	v	file:
+nSampledStoreInvo	campSampling/campRuntime.cpp	/^static uint64_t nSampledStoreInvo; \/\/sampling ratio stat$/;"	v	file:
+nStoreInvo	campSampling/campRuntime.cpp	/^static uint64_t nStoreInvo; \/\/sampling ratio stat$/;"	v	file:
+nanosleep	Qprofiler/x86timer.hpp	/^void nanosleep(uint64_t nanoseconds)$/;"	f	class:x86timer
+nanosleep	camp/x86timer.hpp	/^void nanosleep(uint64_t nanoseconds)$/;"	f	class:x86timer
+nanosleep	objtrace/x86timer.hpp	/^void nanosleep(uint64_t nanoseconds)$/;"	f	class:x86timer
+nestingDepth	Qprofiler/Qprofiler.cpp	/^static unsigned nestingDepth;$/;"	v	file:
+nestingDepth	camp/campExecRuntime.cpp	/^static unsigned nestingDepth;$/;"	v	file:
+nestingDepth	objtrace/ctxObjtraceRuntime.cpp	/^static unsigned nestingDepth;$/;"	v	file:
+now	Qprofiler/x86timer.hpp	/^double now()$/;"	f	class:x86timer
+now	camp/x86timer.hpp	/^double now()$/;"	f	class:x86timer
+now	objtrace/x86timer.hpp	/^double now()$/;"	f	class:x86timer
+obj	objtrace/ctxObjtraceRuntime.h	/^	uint64_t obj;$/;"	m	struct:_CTX
+objTraceCalloc	objtrace/objtraceruntime.cpp	/^objTraceCalloc (size_t num, size_t size, FullID fullId){$/;"	f
+objTraceFinalize	objtrace/objtraceruntime.cpp	/^void objTraceFinalize () {$/;"	f
+objTraceFree	objtrace/objtraceruntime.cpp	/^objTraceFree (void* addr, FullID fullId){$/;"	f
+objTraceInitialize	objtrace/objtraceruntime.cpp	/^void objTraceInitialize () {$/;"	f
+objTraceLoadInstr	objtrace/objtraceruntime.cpp	/^void objTraceLoadInstr (void* addr, FullID fullId) { \/* FullID type is uint64_t *\/$/;"	f
+objTraceMalloc	objtrace/objtraceruntime.cpp	/^objTraceMalloc (size_t size, FullID fullId){$/;"	f
+objTraceRealloc	objtrace/objtraceruntime.cpp	/^objTraceRealloc (void* addr, size_t size, FullID fullId){$/;"	f
+objTraceStoreInstr	objtrace/objtraceruntime.cpp	/^void objTraceStoreInstr (void* addr, FullID fullId) {   \/\/ FullID= uint64_t$/;"	f
+obj_find	Qprofiler/Qprofiler.cpp	/^void obj_find(uint32_t ctx)$/;"	f
+objcount	Qprofiler/Qprofiler.h	/^	char objcount[128];$/;"	m	struct:_INPUT
+pLoadMap	camp/campRuntime.h	/^	LoadHistoryMap *pLoadMap;$/;"	m	struct:HistoryElem
+pLoadMap	campSampling/campRuntime.h	/^	LoadHistoryMap *pLoadMap;$/;"	m	struct:HistoryElem
+padding	camp/campRuntime.h	/^	uint32_t padding; \/\/4byte padding to make StoreHistoryElem 24 byte$/;"	m	struct:StoreHistoryElem
+padding	campSampling/campRuntime.h	/^	uint32_t padding; \/\/4byte padding to make StoreHistoryElem 24 byte$/;"	m	struct:StoreHistoryElem
+pair_clean	objtrace/ctxObjtraceRuntime.cpp	/^void pair_clean()$/;"	f
+paircount	objtrace/ctxObjtraceRuntime.cpp	/^static uint64_t paircount;$/;"	v	file:
+perf_count	camp/armtimer.hpp	/^unsigned int perf_count;$/;"	m	class:armtimer
+perf_time	camp/armtimer.hpp	/^double perf_time;$/;"	m	class:armtimer
+plainFinalize	camp/plainRuntime.cpp	/^void plainFinalize(void){$/;"	f
+plainInitialize	camp/plainRuntime.cpp	/^void plainInitialize(void){$/;"	f
+plain_t	camp/plainRuntime.cpp	/^x86timer plain_t;$/;"	v
+randomSampling	campSampling/campRuntime.cpp	/^static uint16_t randomSampling; \/\/DO sampling when (randomSampling == RANDOM_SAMPLING_CYCLE)$/;"	v	file:
+randomSamplingTriggered	campSampling/campRuntime.cpp	/^static uint64_t randomSamplingTriggered;$/;"	v	file:
+rdtsc	Qprofiler/x86timer.hpp	/^inline uint64_t rdtsc() {$/;"	f
+rdtsc	Qprofiler/x86timer.hpp	/^unsigned __int64 __cdecl rdtsc(void)$/;"	f
+rdtsc	camp/x86timer.hpp	/^inline uint64_t rdtsc() {$/;"	f
+rdtsc	camp/x86timer.hpp	/^unsigned __int64 __cdecl rdtsc(void)$/;"	f
+rdtsc	objtrace/x86timer.hpp	/^inline uint64_t rdtsc() {$/;"	f
+rdtsc	objtrace/x86timer.hpp	/^unsigned __int64 __cdecl rdtsc(void)$/;"	f
+recurCount	camp/campExecRuntime.cpp	/^static int recurCount = 0;$/;"	v	file:
+sampling	campSampling/campRuntime.cpp	/^static uint16_t sampling; \/\/doesn't do anything when it is not 0x0000;$/;"	v	file:
+segvAction	camp/ShadowMemory.hpp	/^		static struct sigaction	segvAction;$/;"	m	class:ShadowMemoryManager	typeref:struct:ShadowMemoryManager::sigaction
+segvAction	camp/campRuntime.cpp	/^struct sigaction ShadowMemoryManager::segvAction; \/\/Page Fault hooking mechanism$/;"	m	class:ShadowMemoryManager	typeref:struct:ShadowMemoryManager::	file:
+segvAction	campSampling/ShadowMemory.hpp	/^		static struct sigaction	segvAction;$/;"	m	class:ShadowMemoryManager	typeref:struct:ShadowMemoryManager::sigaction
+segvAction	campSampling/campRuntime.cpp	/^struct sigaction ShadowMemoryManager::segvAction; \/\/Page Fault hooking mechanism$/;"	m	class:ShadowMemoryManager	typeref:struct:ShadowMemoryManager::	file:
+shadowMemorySetting	objtrace/objtraceruntime.cpp	/^void shadowMemorySetting (void *addr, size_t size, FullID fullId){$/;"	f
+start	Qprofiler/Qprofiler.cpp	/^static clock_t start;$/;"	v	file:
+start	Qprofiler/x86timer.hpp	/^void start()$/;"	f	class:x86timer
+start	camp/x86timer.hpp	/^void start()$/;"	f	class:x86timer
+start	objtrace/x86timer.hpp	/^void start()$/;"	f	class:x86timer
+start_	Qprofiler/x86timer.hpp	/^uint64_t start_,end_;$/;"	m	class:x86timer
+start_	camp/x86timer.hpp	/^uint64_t start_,end_;$/;"	m	class:x86timer
+start_	objtrace/x86timer.hpp	/^uint64_t start_,end_;$/;"	m	class:x86timer
+start_count	camp/armtimer.hpp	/^unsigned int start_count;$/;"	m	class:armtimer
+start_time	camp/armtimer.hpp	/^struct timeval start_time, end_time;$/;"	m	class:armtimer	typeref:struct:armtimer::timeval
+start_total_time	camp/campExecRuntime.cpp	/^static uint64_t start_total_time;$/;"	v	file:
+stop	Qprofiler/x86timer.hpp	/^uint64_t stop()$/;"	f	class:x86timer
+stop	camp/x86timer.hpp	/^uint64_t stop()$/;"	f	class:x86timer
+stop	objtrace/x86timer.hpp	/^uint64_t stop()$/;"	f	class:x86timer
+stop_perfcounter	camp/armtimer.hpp	/^void stop_perfcounter (void)$/;"	f	class:armtimer
+storeElem	camp/campRuntime.h	/^	StoreHistoryElem storeElem;$/;"	m	struct:HistoryElem
+storeElem	campSampling/campRuntime.h	/^	StoreHistoryElem storeElem;$/;"	m	struct:HistoryElem
+storeIdMap	objtrace/objtraceruntime.cpp	/^LoadStoreMap *storeIdMap;$/;"	v
+sum	Qprofiler/x86timer.hpp	/^double sum;$/;"	m	class:x86timer
+sum	camp/x86timer.hpp	/^double sum;$/;"	m	class:x86timer
+sum	objtrace/x86timer.hpp	/^double sum;$/;"	m	class:x86timer
+t	camp/campExecRuntime.cpp	/^armtimer t;$/;"	v
+t	camp/campExecRuntime.cpp	/^x86timer t;$/;"	v
+t	objtrace/objtraceruntime.cpp	/^x86timer t;$/;"	v
+tc_kv	Qprofiler/Qprofiler.h	/^} tc_kv;$/;"	t	typeref:struct:_TIME_CTX
+time	Qprofiler/Qprofiler.h	/^	double time;$/;"	m	struct:_TIME_CTX
+times	Qprofiler/x86timer.hpp	/^int times;$/;"	m	class:x86timer
+times	camp/x86timer.hpp	/^int times;$/;"	m	class:x86timer
+times	objtrace/x86timer.hpp	/^int times;$/;"	m	class:x86timer
+tmpSometime	camp/campExecRuntime.cpp	/^static double tmpSometime = 0.0;$/;"	v	file:
+tmpSometime	camp/campExecRuntime.cpp	/^static unsigned int tmpSometime = 0.0;$/;"	v	file:
+tmpTimeOfContext	camp/campExecRuntime.cpp	/^std::unordered_map<CntxID, double> *tmpTimeOfContext;$/;"	v
+tmpTimeOfContext	camp/campExecRuntime.cpp	/^std::unordered_map<CntxID, unsigned int> *tmpTimeOfContext;$/;"	v
+tmpctx	objtrace/ctxObjtraceRuntime.cpp	/^static uint32_t tmpctx;$/;"	v	file:
+tmpobj	objtrace/ctxObjtraceRuntime.cpp	/^static uint64_t tmpobj;$/;"	v	file:
+totalLooptime	camp/campExecRuntime.cpp	/^static double totalLooptime = 0.0;$/;"	v	file:
+totalSometime	camp/campExecRuntime.cpp	/^static double totalSometime = 0.0;$/;"	v	file:
+totalSometime	camp/campExecRuntime.cpp	/^static unsigned int totalSometime = 0.0;$/;"	v	file:
+totalfunctime	camp/campExecRuntime.cpp	/^static double totalfunctime = 0.0;$/;"	v	file:
+uint64_t	Qprofiler/x86timer.hpp	/^typedef unsigned __int64 uint64_t;$/;"	t
+uint64_t	camp/x86timer.hpp	/^typedef unsigned __int64 uint64_t;$/;"	t
+uint64_t	objtrace/x86timer.hpp	/^typedef unsigned __int64 uint64_t;$/;"	t
+unix	Qprofiler/x86timer.hpp	22;"	d
+unix	camp/x86timer.hpp	22;"	d
+unix	objtrace/x86timer.hpp	22;"	d
+x86timer	Qprofiler/x86timer.hpp	/^class x86timer {$/;"	c
+x86timer	Qprofiler/x86timer.hpp	/^x86timer() {$/;"	f	class:x86timer
+x86timer	camp/x86timer.hpp	/^class x86timer {$/;"	c
+x86timer	camp/x86timer.hpp	/^x86timer() {$/;"	f	class:x86timer
+x86timer	objtrace/x86timer.hpp	/^class x86timer {$/;"	c
+x86timer	objtrace/x86timer.hpp	/^x86timer() {$/;"	f	class:x86timer
