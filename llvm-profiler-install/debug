@@ -12,10 +12,50 @@ make[2]: Entering directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-instal
 make[2]: Nothing to be done for `all'.
 make[2]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/lib/CAMP'
 make[2]: Entering directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/lib/ObjTrace'
-make[2]: Nothing to be done for `all'.
+llvm[2]: Compiling CtxObjtrace.cpp for Debug+Asserts build (PIC)
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/ObjTrace/CtxObjtrace.cpp:275:32: warning: unused variable 'loopIdOf' [-Wunused-variable]
+        ContextTreeBuilder::LoopIdOf *loopIdOf = cxtTreeBuilder->getLoopIDMap();
+                                      ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/ObjTrace/CtxObjtrace.cpp:406:20: warning: unused variable 'dataLayout' [-Wunused-variable]
+        const DataLayout &dataLayout = module->getDataLayout();
+                          ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/ObjTrace/CtxObjtrace.cpp:473:21: warning: unused variable 'termInst' [-Wunused-variable]
+        if(TerminatorInst *termInst = dyn_cast<TerminatorInst>(invokeOrCallInst)){
+                           ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/ObjTrace/CtxObjtrace.cpp:769:18: warning: unused function 'getCalledFunction_aux' [-Wunused-function]
+static Function *getCalledFunction_aux(Instruction* indCall){
+                 ^
+4 warnings generated.
+llvm[2]: Linking Debug+Asserts Loadable Module ObjTrace.so
 make[2]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/lib/ObjTrace'
 make[2]: Entering directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/lib/Qprofiler'
-make[2]: Nothing to be done for `all'.
+llvm[2]: Compiling Qprofiler.cpp for Debug+Asserts build (PIC)
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/Qprofiler/Qprofiler.cpp:206:32: warning: unused variable 'loopIdOf' [-Wunused-variable]
+        ContextTreeBuilder::LoopIdOf *loopIdOf = cxtTreeBuilder->getLoopIDMap();
+                                      ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/Qprofiler/Qprofiler.cpp:197:15: warning: unused variable 'Context' [-Wunused-variable]
+        LLVMContext &Context = M.getContext();
+                     ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/Qprofiler/Qprofiler.cpp:215:15: warning: comparison of integers of different signs: 'int' and 'unsigned int' [-Wsign-compare]
+                        if(ucctx[v]==(*locIdOf_loop)[loopID.first].second)
+                           ~~~~~~~~^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/Qprofiler/Qprofiler.cpp:243:15: warning: comparison of integers of different signs: 'int' and 'unsigned int' [-Wsign-compare]
+                        if(ucctx[v]==normalCallSite.second.second)
+                           ~~~~~~~~^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/Qprofiler/Qprofiler.cpp:367:20: warning: unused variable 'dataLayout' [-Wunused-variable]
+        const DataLayout &dataLayout = module->getDataLayout();
+                          ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/Qprofiler/Qprofiler.cpp:435:21: warning: unused variable 'termInst' [-Wunused-variable]
+        if(TerminatorInst *termInst = dyn_cast<TerminatorInst>(invokeOrCallInst)){
+                           ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/Qprofiler/Qprofiler.cpp:576:29: warning: unused variable 'callInst' [-Wunused-variable]
+        else if(InvokeInst *callInst = dyn_cast<InvokeInst>(instruction)){
+                            ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/lib/Qprofiler/Qprofiler.cpp:509:22: warning: unused variable 'callInst' [-Wunused-variable]
+        if(CallInst *callInst = dyn_cast<CallInst>(instruction)){
+                     ^
+8 warnings generated.
+llvm[2]: Linking Debug+Asserts Loadable Module Qprofiler.so
 make[2]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/lib/Qprofiler'
 make[1]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/lib'
 make[1]: Entering directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools'
@@ -26,50 +66,50 @@ make[2]: Entering directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-instal
 make[2]: Nothing to be done for `all'.
 make[2]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools/campSampling'
 make[2]: Entering directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools/objtrace'
-make[2]: Nothing to be done for `all'.
-make[2]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools/objtrace'
-make[2]: Entering directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools/Qprofiler'
-llvm[2]: Compiling Qprofiler.cpp for Debug+Asserts build (PIC)
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.cpp:91:22: error: use of undeclared identifier 'mergetstack'; did you mean 'mergestack'?
-        if(mergestack[0] || mergetstack[1])
-                            ^~~~~~~~~~~
-                            mergestack
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.cpp:41:18: note: 'mergestack' declared here
-static uint32_t *mergestack;
-                 ^
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.cpp:117:14: error: use of undeclared identifier 'c'
-                merged_arr[c].ctxid_array[0]=mergestack[0];
-                           ^
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.cpp:118:14: error: use of undeclared identifier 'c'
-                merged_arr[c].ctxid_array[1]=mergestack[2];
-                           ^
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.cpp:123:23: error: use of undeclared identifier 'c'
-                                strcat(merged_arr[c].merged_objcount,instr[i].objcount);
-                                                  ^
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.cpp:140:20: error: no member named 'ctxid_arr' in '_MERGED_STACK'; did you mean 'ctxid_array'?
-                if(merged_arr[a].ctxid_arr[0]==ctx || merged_arr[a].ctxid_arr[1]==ctx)
-                                 ^~~~~~~~~
-                                 ctxid_array
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.h:32:11: note: 'ctxid_array' declared here
-        uint32_t ctxid_array[2];
-                 ^
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.cpp:140:55: error: no member named 'ctxid_arr' in '_MERGED_STACK'; did you mean 'ctxid_array'?
-                if(merged_arr[a].ctxid_arr[0]==ctx || merged_arr[a].ctxid_arr[1]==ctx)
-                                                                    ^~~~~~~~~
-                                                                    ctxid_array
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.h:32:11: note: 'ctxid_array' declared here
-        uint32_t ctxid_array[2];
-                 ^
-In file included from /home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/Qprofiler.cpp:16:
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/x86timer.hpp:56:10: warning: private field 'fstart' is not used [-Wunused-private-field]
+llvm[2]: Compiling ctxObjtraceRuntime.cpp for Debug+Asserts build (PIC)
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:32:1: error: unknown type name 'AllocMap'
+AllocMap *ctxAllocIdMap;
+^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:81:22: error: unknown type name 'AllocMap'
+        ctxAllocIdMap = new AllocMap();
+                            ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:243:2: error: use of undeclared identifier 'AllocMap'
+        AllocMap::iterator it = ctxAllocIdMap->find(fullId);
+        ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:246:3: error: unknown type name 'AllocInfo'
+                AllocInfo allocSet;
+                ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:248:44: error: use of undeclared identifier 'AllocInfo'
+                ctxAllocIdMap->insert( std::pair<FullID, AllocInfo> ( fullId, allocSet ) );
+                                                         ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:266:2: error: use of undeclared identifier 'AllocMap'
+        AllocMap::iterator it = ctxAllocIdMap->find(fullId);
+        ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:269:3: error: unknown type name 'AllocInfo'
+                AllocInfo allocSet;
+                ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:271:44: error: use of undeclared identifier 'AllocInfo'
+                ctxAllocIdMap->insert( std::pair<FullID, AllocInfo> (fullId, allocSet) );
+                                                         ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:290:2: error: use of undeclared identifier 'AllocMap'
+        AllocMap::iterator it = ctxAllocIdMap->find(fullId);
+        ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:293:3: error: unknown type name 'AllocInfo'
+                AllocInfo allocSet;
+                ^
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:295:44: error: use of undeclared identifier 'AllocInfo'
+                ctxAllocIdMap->insert( std::pair<FullID, AllocInfo> (fullId, allocSet) );
+                                                         ^
+In file included from /home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/ctxObjtraceRuntime.cpp:14:
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/x86timer.hpp:56:10: warning: private field 'fstart' is not used [-Wunused-private-field]
 uint64_t fstart,fend;
          ^
-/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/Qprofiler/x86timer.hpp:56:17: warning: private field 'fend' is not used [-Wunused-private-field]
+/home/qyt/llvm-snumake/plug-in/llvm-profiler/tools/objtrace/x86timer.hpp:56:17: warning: private field 'fend' is not used [-Wunused-private-field]
 uint64_t fstart,fend;
                 ^
-2 warnings and 6 errors generated.
-make[2]: *** [/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools/Qprofiler/Debug+Asserts/Qprofiler.o] Error 1
-make[2]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools/Qprofiler'
+2 warnings and 11 errors generated.
+make[2]: *** [/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools/objtrace/Debug+Asserts/ctxObjtraceRuntime.o] Error 1
+make[2]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools/objtrace'
 make[1]: *** [all] Error 1
 make[1]: Leaving directory `/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/tools'
 make: *** [all] Error 1

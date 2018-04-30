@@ -323,7 +323,7 @@ bool CAMPInstaller::runOnModule(Module& M) {
 
 	//first, traverse locIdOf_indCall
 	for(std::pair<CntxID, const Loop *> loopID : *loopOfLoopID){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first]);
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first].first);
 		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
 	}
 /*
@@ -544,7 +544,7 @@ void CAMPInstaller::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
 
 Value *CAMPInstaller::addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs){
 	assert(isa<InvokeInst>(invokeOrCallInst)||isa<CallInst>(invokeOrCallInst));
-	assert((*locIdOf_callSite)[invokeOrCallInst] == (LocalContextID)(-1));
+	assert((*locIdOf_callSite)[invokeOrCallInst].first == (LocalContextID)(-1));
 
 	LLVMContext &llvmContext = invokeOrCallInst->getModule()->getContext();
 	const DataLayout &dataLayout = module->getDataLayout();

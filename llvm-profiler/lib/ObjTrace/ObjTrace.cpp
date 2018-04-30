@@ -1,131 +1,186 @@
 #include "llvm/IR/LLVMContext.h"
+#include "llvm/IR/CallSite.h"
 
+#include "llvm/IR/DerivedTypes.h"
+#include "llvm/IR/IntrinsicInst.h"
 #include "llvm/IR/Instructions.h"
+#include "llvm/Support/Compiler.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/Debug.h"
+#include "llvm/Support/CommandLine.h"
+#include "llvm/IR/CFG.h"
 #include "llvm/IR/IRBuilder.h"
+
+#include "llvm/Analysis/CallGraph.h"
+#include "llvm/Analysis/LoopInfo.h"
+#include "llvm/Analysis/LoopPass.h"
+#include "llvm/ADT/SmallVector.h"
+#include "llvm/Analysis/Passes.h"
 #include "llvm/IR/DataLayout.h"
 #include "llvm/IR/InstIterator.h"
 
 #include "corelab/Utilities/InstInsertPt.h"
 #include "corelab/Utilities/GlobalCtors.h"
 #include "corelab/Metadata/Metadata.h"
+#include "corelab/Metadata/LoadNamer.h"
 #include "corelab/ObjTrace/ObjTrace.h"
 
 #include <iostream>
 #include <vector>
+#include <list>
 #include <cstdlib>
-#include <inttypes.h>
 
-using namespace std;
+//#define CAMP_INSTALLER_DEBUG
+//#define CAMP_CONTEXT_STACK_APPROACH
+#define CAMP_CONTEXT_TREE_APPROACH
+
+#define GET_INSTR_ID(fullId) ((uint32_t) ((fullId >> 16)& 0xFFFFFFFF))
+
 using namespace corelab;
 
 char ObjTrace::ID = 0;
-static RegisterPass<ObjTrace> X("objtrace", "Object memory allocation tracing", false, false);
+static RegisterPass<ObjTrace> X("objtrace", "Context time tracing", false, false);
 
-//cl::opt<std::string> targetFunction("targetFunction", cl::init(""), cl::NotHidden, cl::desc("Target Function for obj trace"));
-
-//Util
-static Function *getCalledFunction_aux(Instruction* indCall); // From AliasAnalysis/IndirectCallAnal.cpp
+//Utils
 static const Value *getCalledValueOfIndCall(const Instruction* indCall);
+Instruction *getProloguePosition(Instruction *inst);
+static Function *getCalledFunction_aux(Instruction* indCall);
 
-void ObjTrace::setFunctions(Module &M) {
-  LLVMContext &Context = M.getContext();
 
-  objTraceInitialize = M.getOrInsertFunction(
-      "objTraceInitialize",
-      Type::getVoidTy(Context),
-      (Type*)0);
+void ObjTrace::setFunctions(Module &M)
+{
+	LLVMContext &Context = M.getContext();
 
-  objTraceFinalize = M.getOrInsertFunction(
-      "objTraceFinalize",
-      Type::getVoidTy(Context),
-      (Type*)0);
+	objTraceInitialize = M.getOrInsertFunction(
+			"objTraceInitialize",
+			Type::getVoidTy(Context),
+			(Type*)0);
 
-  objTraceLoadInstr = M.getOrInsertFunction(
-      "objTraceLoadInstr",
-      Type::getVoidTy(Context), /* Return type */
-      Type::getInt64Ty(Context), /* Address */
-      Type::getInt64Ty(Context), /* Instr ID */
-      (Type*)0);
+	objTraceFinalize = M.getOrInsertFunction(
+			"objTraceFinalize",
+			Type::getVoidTy(Context),
+			(Type*)0);
+	
+	objTraceCallSiteBegin = M.getOrInsertFunction(
+			"objTraceCallSiteBegin",
+			Type::getVoidTy(Context),
+			Type::getInt16Ty(Context),
+			Type::getInt32Ty(Context),
+			(Type*)0);
 
-  objTraceStoreInstr = M.getOrInsertFunction(
-      "objTraceStoreInstr",
-      Type::getVoidTy(Context), /* Return type */
-      Type::getInt64Ty(Context), /* Address */
-      Type::getInt64Ty(Context), /* Instr ID */
-      (Type*)0);
+	objTraceCallSiteEnd = M.getOrInsertFunction(
+			"objTraceCallSiteEnd",
+			Type::getVoidTy(Context),
+			Type::getInt16Ty(Context),
+			(Type*)0);
 
-  objTraceMalloc = M.getOrInsertFunction(
-      "objTraceMalloc",
-      Type::getInt8PtrTy(Context), /* Return type */
-      Type::getInt64Ty(Context), /* allocation size */
-      Type::getInt64Ty(Context), /* Instr ID */
-      (Type*)0);
+	objTraceLoopBegin = M.getOrInsertFunction(
+			"objTraceLoopBegin",
+			Type::getVoidTy(Context),
+			Type::getInt16Ty(Context),
+			Type::getInt32Ty(Context),
+			(Type*)0);
 
-  objTraceCalloc = M.getOrInsertFunction(
-      "objTraceCalloc",
-      Type::getInt8PtrTy(Context), /* Return type */
-      Type::getInt64Ty(Context), /* Num */
-      Type::getInt64Ty(Context), /* allocation size */
-      Type::getInt64Ty(Context), /* Instr ID */
-      (Type*)0);
+	objTraceLoopNext = M.getOrInsertFunction( 
+			"objTraceLoopNext",
+			Type::getVoidTy(Context),
+			(Type*)0);
 
-  objTraceRealloc = M.getOrInsertFunction(
-      "objTraceRealloc",
-      Type::getInt8PtrTy(Context), /* Return type */
-      Type::getInt8PtrTy(Context), /* originally allocated address */
-      Type::getInt64Ty(Context), /* allocation size */
-      Type::getInt64Ty(Context), /* Instr ID */
-      (Type*)0);
+	objTraceLoopEnd = M.getOrInsertFunction(
+			"objTraceLoopEnd",
+			Type::getVoidTy(Context),
+			Type::getInt16Ty(Context),
+			(Type*)0);
+	
+	objTraceDisableCtxtChange = M.getOrInsertFunction(
+			"objTraceDisableCtxtChange",
+			Type::getVoidTy(Context),
+			(Type*)0);
 
-  objTraceFree = M.getOrInsertFunction(
-      "objTraceFree",
-      Type::getVoidTy(Context), /* Return type */
-      Type::getInt8PtrTy(Context), /* address to free */
-      Type::getInt64Ty(Context), /* Instr ID */
-      (Type*)0);
+	objTraceEnableCtxtChange = M.getOrInsertFunction(
+			"objTraceEnableCtxtChange",
+			Type::getVoidTy(Context),
+			(Type*)0);
+	return;
 }
 
-void ObjTrace::setIniFini(Module& M) {
-  LLVMContext &Context = M.getContext();
-  //LoadNamer &loadNamer = getAnalysis< LoadNamer >();
-  //uint64_t maxLoopDepth = (uint64_t)getAnalysis< LoopTraverse >().getMaxLoopDepth();
-  std::vector<Type*> formals(0);
-  std::vector<Value*> actuals(0);
-  FunctionType *voidFcnVoidType = FunctionType::get(Type::getVoidTy(Context), formals, false);
+void ObjTrace::setIniFini(Module& M)
+{
 
-  /* initialize */
-  Function *initForCtr = Function::Create(
-      voidFcnVoidType, GlobalValue::InternalLinkage, "__constructor__", &M);
-  BasicBlock *entry = BasicBlock::Create(Context,"entry", initForCtr);
-  BasicBlock *initBB = BasicBlock::Create(Context, "init", initForCtr);
-  actuals.resize(0);
-  CallInst::Create(objTraceInitialize, actuals, "", entry);
-  BranchInst::Create(initBB, entry);
-  ReturnInst::Create(Context, 0, initBB);
-  callBeforeMain(initForCtr);
+	LLVMContext &Context = M.getContext();
+	std::vector<Type*> formals(0);
+	std::vector<Value*> actuals(0);
+	FunctionType *voidFcnVoidType = FunctionType::get(Type::getVoidTy(Context), formals, false);
 
-  /* finalize */
-  Function *finiForDtr = Function::Create(
-      voidFcnVoidType, GlobalValue::InternalLinkage, "__destructor__",&M);
-  BasicBlock *finiBB = BasicBlock::Create(Context, "entry", finiForDtr);
-  BasicBlock *fini = BasicBlock::Create(Context, "fini", finiForDtr);
-  actuals.resize(0);
-  CallInst::Create(objTraceFinalize, actuals, "", fini);
-  BranchInst::Create(fini, finiBB);
-  ReturnInst::Create(Context, 0, fini);
-  callAfterMain(finiForDtr);
+	/* initialize */
+	Function *initForCtr = Function::Create( 
+			voidFcnVoidType, GlobalValue::InternalLinkage, "__constructor__", &M); 
+	BasicBlock *entry = BasicBlock::Create(Context,"entry", initForCtr); 
+	BasicBlock *initBB = BasicBlock::Create(Context, "init", initForCtr); 
+	actuals.resize(0);
+	
+	CallInst::Create(objTraceInitialize, actuals, "", entry); 
+	BranchInst::Create(initBB, entry); 
+	ReturnInst::Create(Context, 0, initBB);
+	callBeforeMain(initForCtr);
+	
+	/* finalize */
+	Function *finiForDtr = Function::Create(voidFcnVoidType, GlobalValue::InternalLinkage, "__destructor__",&M);
+	BasicBlock *finiBB = BasicBlock::Create(Context, "entry", finiForDtr);
+	BasicBlock *fini = BasicBlock::Create(Context, "fini", finiForDtr);
+	
+	actuals.resize(0);
+
+	CallInst::Create(objTraceFinalize, actuals, "", fini);
+	BranchInst::Create(fini, finiBB);
+	ReturnInst::Create(Context, 0, fini);
+	callAfterMain(finiForDtr);
 }
 
 bool ObjTrace::runOnModule(Module& M) {
-  setFunctions(M);
-  module = &M;
-  LLVMContext &Context = M.getContext();
+	assert((externalCalls.empty() && indirectCalls.empty())&&"ERROR:: CAMPInstaller::runOnModule runs twice?");
 	
-  DEBUG(errs()<<"############## runOnModule [ObjTrace] START ##############\n");
+	setFunctions(M);
+	module = &M;
+	LLVMContext &Context = M.getContext();
+/*	
+	#ifdef CAMP_CONTEXT_TREE_APPROACH
 
-  for(Module::iterator fi = M.begin(), fe = M.end(); fi != fe; ++fi) {
+	cxtTreeBuilder = &getAnalysis< ContextTreeBuilder >();
+
+	pCxtTree = cxtTreeBuilder->getContextTree();
+	locIdOf_callSite = cxtTreeBuilder->getLocIDMapForCallSite();
+	locIdOf_indCall = cxtTreeBuilder->getLocIDMapForIndirectCalls();
+	locIdOf_loop = cxtTreeBuilder->getLocIDMapForLoop();
+	ContextTreeBuilder::LoopIdOf *loopIdOf = cxtTreeBuilder->getLoopIDMap();
+	ContextTreeBuilder::LoopOfCntxID *loopOfLoopID = cxtTreeBuilder->getLoopMapOfCntxID();
+
+
+	//first, traverse locIdOf_indCall
+	for(std::pair<CntxID, const Loop *> loopID : *loopOfLoopID){
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first]);
+		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+	}
+
+
+
+	for( std::pair<const Instruction *, std::vector<std::pair<Function *, LocalContextID>>> &indCall : *locIdOf_indCall){
+		Value *locIDVal = addTargetComparisonCodeForIndCall(indCall.first, indCall.second);
+		addProfilingCodeForCallSite(const_cast<Instruction *>(indCall.first), locIDVal);
+	}
+
+
+	for( std::pair<const Instruction *, LocalContextID> &normalCallSite : *locIdOf_callSite ){
+		if (normalCallSite.second != (LocalContextID)(-1) ){
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second);
+		addProfilingCodeForCallSite(const_cast<Instruction *>(normalCallSite.first), locIDVal);
+		}
+	}	
+	
+#endif //CAMP_CONTEXT_TREE_APPROACH
+*/
+
+/*  for(Module::iterator fi = M.begin(), fe = M.end(); fi != fe; ++fi) {
     Function &F = *fi;
     const DataLayout &dataLayout = module->getDataLayout();
     std::vector<Value*> args(0);
@@ -141,17 +196,13 @@ bool ObjTrace::runOnModule(Module& M) {
           InstInsertPt out = InstInsertPt::Before(ld);
           addr = castTo(addr, temp, out, &dataLayout);
 
-          //InstrID instrId = Namer::getInstrId(instruction);
-          //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
           FullID fullId = Namer::getFullId(instruction);
-          Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
-          //for debug
-          //errs()<<"<"<<instrId<<"> "<<*ld<<"\n";
-
-          //DEBUG(errs()<< "load instruction id %" << fullId << "\n");
+					uint32_t instrId = GET_INSTR_ID(fullId);
+          Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
+					
 
           args[0] = addr;
-          args[1] = fullId_;
+          args[1] = instrId_;
           CallInst::Create(objTraceLoadInstr, args, "", ld);
         }
       }
@@ -163,25 +214,269 @@ bool ObjTrace::runOnModule(Module& M) {
         InstInsertPt out = InstInsertPt::Before(st);
         addr = castTo(addr, temp, out, &dataLayout);
 
-        //InstrID instrId = Namer::getInstrId(instruction);
-        //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
         FullID fullId = Namer::getFullId(instruction);
-        Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
-
-        //DEBUG(errs()<< "store instruction id %" << fullId << "\n");
+				uint32_t instrId = GET_INSTR_ID(fullId);
+        Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
 
         args[0] = addr;
-        args[1] = fullId_;
+        args[1] = instrId_;
         CallInst::Create(objTraceStoreInstr, args, "", st);
       }
-    }
-  }
+		}
+	}
 
-  hookMallocFree();
 
-  DEBUG(errs()<<"############## runOnModule [ObjTrace] END ##############\n");
-  setIniFini(M);
-  return false;
+	hookMallocFree();*/
+	
+	cxtTreeBuilder = &getAnalysis< ContextTreeBuilder >();
+
+	pCxtTree = cxtTreeBuilder->getContextTree();
+	locIdOf_callSite = cxtTreeBuilder->getLocIDMapForCallSite();
+	locIdOf_indCall = cxtTreeBuilder->getLocIDMapForIndirectCalls();
+	locIdOf_loop = cxtTreeBuilder->getLocIDMapForLoop();
+	ContextTreeBuilder::LoopIdOf *loopIdOf = cxtTreeBuilder->getLoopIDMap();
+	ContextTreeBuilder::LoopOfCntxID *loopOfLoopID = cxtTreeBuilder->getLoopMapOfCntxID();
+
+
+	//first, traverse locIdOf_indCall
+	for(std::pair<CntxID, const Loop *> loopID : *loopOfLoopID){
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first].first);
+		Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal,uniIDVal);
+	}
+
+
+
+	for( std::pair<const Instruction *, std::vector<std::pair<Function *, LocalContextID>>> &indCall : *locIdOf_indCall){
+		Value *locIDVal = addTargetComparisonCodeForIndCall(indCall.first, indCall.second);
+		Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+		addProfilingCodeForCallSite(const_cast<Instruction *>(indCall.first), locIDVal,uniIDVal);
+	}
+
+
+	for( std::pair<const Instruction *, std::pair<LocalContextID, UniqueContextID>> &normalCallSite : *locIdOf_callSite ){
+		if (normalCallSite.second.first != (LocalContextID)(-1) ){
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second.first);
+		Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+		addProfilingCodeForCallSite(const_cast<Instruction *>(normalCallSite.first), locIDVal, uniIDVal);
+		}
+	}	
+
+	setIniFini(M);
+
+	return false;
+}
+
+void ObjTrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal, Value *uniIDVal){
+	// get the pre-header, header and exitblocks
+	BasicBlock *header = L->getHeader();
+	BasicBlock *preHeader = L->getLoopPreheader();
+	SmallVector<BasicBlock*, 1> exitingBlocks;
+	L->getExitingBlocks(exitingBlocks);
+
+	
+	// set loopID as an argument
+	std::vector<Value*> args(1); 
+
+	// call beginLoop at the loop preheader
+	// it will push the conext
+	args.resize(2);
+	args[0] = locIDVal; 
+	args[1] = uniIDVal;
+	assert(!preHeader->empty() && "ERROR: preheader of loop doesnt have TerminatorInst");
+	CallInst::Create(objTraceLoopBegin, args, "", preHeader->getTerminator());
+
+
+	// call endLoop at the exit blocks
+	// it will pop the context
+	int edgenum = 0;
+	char edgeId[50];
+	for (unsigned i = 0; i < exitingBlocks.size(); ++i)
+	{
+		BasicBlock *exitingBB = exitingBlocks[i];
+		TerminatorInst *exitingTerm = exitingBB->getTerminator();
+		unsigned int exitNum = exitingTerm->getNumSuccessors();
+		unsigned int realExit = 0;
+		for (unsigned int exit_i = 0; exit_i < exitNum; ++exit_i)
+		{
+			bool find = true;
+			for (Loop::block_iterator bi = L->block_begin(), 
+					be = L->block_end(); bi != be; ++bi)
+			{
+				BasicBlock *compare = (*bi);
+				BasicBlock *target = exitingTerm->getSuccessor(exit_i);
+				if (target == compare)
+					find = false;
+			}
+			if(find)
+			{
+				++realExit;
+				sprintf(edgeId, "edge%d", ++edgenum);
+
+				BasicBlock *exitBB = exitingTerm->getSuccessor(exit_i);
+				if(exitBB->isLandingPad())
+				{
+					bool isDominatedByLoop = std::all_of(pred_begin(exitBB), pred_end(exitBB), [L](BasicBlock *bb){return L->isLoopExiting(bb);});
+					assert(isDominatedByLoop && "ERROR:: exitBB doesn't dominated by loop!");
+					args.resize(1);
+					args[0] = locIDVal;	
+					Instruction *inst = exitBB->getFirstNonPHI();
+					assert(exitBB->getLandingPadInst() == inst && "ERROR:: FirstNonPHI of LandingPad BB is not LandingPadinst!");
+					assert(inst->getNextNode() && "ERROR:: next inst of LandingPadinst doesnt exists.");
+					CallInst::Create(objTraceLoopEnd, args, "", inst->getNextNode());
+				}
+				else
+				{
+					BasicBlock *edgeBB = BasicBlock::Create(module->getContext(), edgeId,exitingBB->getParent());
+					exitingTerm->setSuccessor(exit_i, edgeBB);
+					BranchInst::Create(exitBB, edgeBB);
+				
+					for(BasicBlock::iterator ii = exitBB->begin(), 
+							ie = exitBB->end(); ii != ie; ++ii) {
+						Instruction *inst = &(*ii);
+						if (inst->getOpcode()==Instruction::PHI) {
+							PHINode *phiNode = (PHINode *)inst;
+							for(unsigned int bi = 0; bi < phiNode->getNumIncomingValues();
+									++bi) {
+								if(phiNode->getIncomingBlock(bi) == exitingBB)
+								{
+									phiNode->setIncomingBlock(bi, edgeBB);
+									break;
+								}
+							}
+						}
+					}
+					args.resize(1);
+					args[0] = locIDVal;	
+					Instruction *inst = edgeBB->getFirstNonPHI();
+					CallInst::Create(objTraceLoopEnd, args, "", inst);
+				}// if exitBB is not LandingPad
+			}
+		}
+	}
+	// call beginIteration at the loop header
+	// it will increase the iteration count of the loop
+	args.resize(0);
+	CallInst::Create(objTraceLoopNext, args, "", header->getFirstNonPHI()); 
+}
+
+Value *ObjTrace::addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs){
+	assert(isa<InvokeInst>(invokeOrCallInst)||isa<CallInst>(invokeOrCallInst));
+	assert((*locIdOf_callSite)[invokeOrCallInst].first == (LocalContextID)(-1));
+	
+	LLVMContext &llvmContext = invokeOrCallInst->getModule()->getContext();
+	const DataLayout &dataLayout = module->getDataLayout();
+	Instruction *pInvokeOrCallInst = const_cast<Instruction *>(invokeOrCallInst);
+
+	AllocaInst *locIDAddr = new AllocaInst(Type::getInt16Ty(llvmContext), "locID", getProloguePosition(const_cast<Instruction *>(invokeOrCallInst)));
+	locIDAddr->setAlignment(sizeof(LocalContextID));
+
+	BasicBlock* jumpHereAfterAssign =pInvokeOrCallInst->getParent()->splitBasicBlock(pInvokeOrCallInst, "AfterAssign."+locIDAddr->getName());
+
+	TerminatorInst* insertCmpBeforehere = jumpHereAfterAssign->getSinglePredecessor()->getTerminator();
+	pInvokeOrCallInst = jumpHereAfterAssign->getFirstNonPHI();
+
+	Value *locIDVal = new LoadInst(locIDAddr, "Loaded."+locIDAddr->getName(), pInvokeOrCallInst);
+
+	assert((locIDAddr && jumpHereAfterAssign && insertCmpBeforehere && locIDVal) && "ERROR: locIDAddrOf Map Error!!");
+
+	//compare with this
+	const Value *calledVal = getCalledValueOfIndCall(invokeOrCallInst);//same definition in ContextTreeBuilder.cpp
+
+	//this loop will iterate by number of target candidate and make compare code(icmp, branch. basicblock)
+	for(std::pair<Function *, LocalContextID> &targetLocID : targetLocIDs){
+		Function *callee = targetLocID.first;
+		Value *constLocID = ConstantInt::get(Type::getInt16Ty(llvmContext), targetLocID.second);
+
+		//Amazingly, We can just compare (Function *) type with calledVal (may be Function pointer but how?)
+		assert(const_cast<Value *>(calledVal)->getType() == callee->getType());
+		ICmpInst* icmpInst = new ICmpInst(insertCmpBeforehere, ICmpInst::ICMP_EQ, const_cast<Value *>(calledVal), callee);
+
+		BasicBlock *notMatchedBB=insertCmpBeforehere->getParent()->splitBasicBlock(insertCmpBeforehere, "NotMatched."+locIDAddr->getName()+"."+callee->getName()); // error when it happens
+
+		BasicBlock *locIDAssignBB = BasicBlock::Create(invokeOrCallInst->getModule()->getContext(), "locIDResolved."+locIDAddr->getName()+"."+callee->getName(), pInvokeOrCallInst->getParent()->getParent());
+		new StoreInst(constLocID, locIDAddr, locIDAssignBB);
+		BranchInst::Create(jumpHereAfterAssign, locIDAssignBB);
+
+		//Replace unconditional branch to conditional branch
+		assert(notMatchedBB->getSinglePredecessor()->getTerminator() == icmpInst->getNextNode() && "ERROR: next instruction of icmp is not BranchInst! ..1");
+		assert(isa<BranchInst>(icmpInst->getNextNode()) && "ERROR: next instruction of icmp is not BranchInst! ..2");
+		BasicBlock* branchInsertAtEnd = icmpInst->getNextNode()->getParent();
+		assert(branchInsertAtEnd == notMatchedBB->getSinglePredecessor());
+		icmpInst->getNextNode()->eraseFromParent();
+		BranchInst::Create(locIDAssignBB, notMatchedBB, icmpInst, branchInsertAtEnd);
+	}
+	//addProfilingCodeForCallSite(pInvokeOrCallInst, locIDVal);
+	return locIDVal;
+}
+
+void ObjTrace::addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal, Value *uniIDVal){
+	std::vector<Value*> args(0);
+	args.resize(2);
+	args[0] = locIDVal;
+	args[1] = uniIDVal;
+
+	Constant* ContextBegin = objTraceCallSiteBegin;
+	Constant* ContextEnd = objTraceCallSiteEnd;
+
+	CallInst::Create(ContextBegin, args, "", invokeOrCallInst);
+
+	args.resize(1);
+	args[0] = locIDVal;
+	auto found = std::find_if(pCxtTree->begin(), pCxtTree->end(), [invokeOrCallInst](ContextTreeNode *p){return p->getCallInst() == invokeOrCallInst;});
+	assert(found != pCxtTree->end());
+	if((*found)->isRecursiveCallSiteNode()){
+		std::vector<Value*> argsNone(0);
+		argsNone.resize(0);
+		CallInst::Create(objTraceDisableCtxtChange, argsNone, "", invokeOrCallInst);
+	}
+
+	assert((isa<InvokeInst>(invokeOrCallInst) && (!isa<TerminatorInst>(invokeOrCallInst))) == false && "WTF??");
+	if(TerminatorInst *termInst = dyn_cast<TerminatorInst>(invokeOrCallInst)){
+
+		if(isa<CallInst>(invokeOrCallInst)){
+			CallInst *ci = CallInst::Create(ContextEnd, args, "", invokeOrCallInst->getParent());
+			if((*found)->isRecursiveCallSiteNode()){
+				std::vector<Value*> argsNone(0);
+				argsNone.resize(0);
+				CallInst::Create(objTraceEnableCtxtChange, argsNone, "", ci);
+			}
+		}
+		else if(InvokeInst *invokeInst = dyn_cast<InvokeInst>(invokeOrCallInst)){
+			//insert ConextEnd to two successors of invokeInst (normal, exception)
+			assert(invokeInst->getNumSuccessors()==2 && "ERROR:: InvokeInst has more than 2 successors!");
+
+			BasicBlock* normalDestBB = invokeInst->getNormalDest();
+			CallInst *ci1 = CallInst::Create(ContextEnd, args, "", normalDestBB->getFirstNonPHI());
+
+			BasicBlock* unwindDestBB = invokeInst->getUnwindDest();
+			Instruction *landingPadInst = unwindDestBB->getFirstNonPHI();
+			assert(landingPadInst == invokeInst->getLandingPadInst());
+			assert(landingPadInst->getNextNode() && "ERROR:: next inst of landingPadInst doesn't exist.");
+			//if this landingPadBB is exitBB of some Loop, insert ContextEnd before ContextEnd of Loop
+			//because function exit(ret) happens first.
+			CallInst *ci2 = CallInst::Create(ContextEnd, args, "", landingPadInst->getNextNode());
+			if((*found)->isRecursiveCallSiteNode()){
+				std::vector<Value*> argsNone(0);
+				argsNone.resize(0);
+				CallInst::Create(objTraceEnableCtxtChange, argsNone, "", ci1);
+				CallInst::Create(objTraceEnableCtxtChange, argsNone, "", ci2);
+			}
+		}
+		else
+			assert(0&&"WTF?????");
+	}
+	else{
+		assert(invokeOrCallInst->getNextNode() != NULL && "ERROR: next instruction of Non-TerminatorInst doesn't exist.");
+		CallInst *ci = CallInst::Create(ContextEnd, args, "", invokeOrCallInst->getNextNode());
+
+		if((*found)->isRecursiveCallSiteNode()){
+			std::vector<Value*> argsNone(0);
+			argsNone.resize(0);
+			CallInst::Create(objTraceEnableCtxtChange, argsNone, "", ci);
+		}
+
+	}
 }
 
 void ObjTrace::hookMallocFree(){
@@ -213,14 +508,13 @@ void ObjTrace::hookMallocFree(){
 
         if(CallInst *callInst = dyn_cast<CallInst>(instruction)){
           if(callee->getName() == "malloc"){
-            //InstrID instrId = Namer::getInstrId(instruction);
-            uint64_t fullId = Namer::getFullId(instruction);
-            //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
-            Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
-            //DEBUG(errs()<< "Malloc\n");
-            args.resize(2);
+            FullID fullId = Namer::getFullId(instruction);
+						uint32_t instrId = GET_INSTR_ID(fullId);
+            Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
+            
+						args.resize(2);
             args[0] = instruction->getOperand(0);
-            args[1] = fullId_;
+            args[1] = instrId_;
             if(wasBitCasted){// for indirect call bitcast malloc
               Value * changeTo = Builder.CreateBitCast(objTraceMalloc, ty);
               CallInst *newCallInst = Builder.CreateCall(changeTo, args, "");
@@ -235,15 +529,14 @@ void ObjTrace::hookMallocFree(){
             }
           }
           else if(callee->getName() == "calloc"){
-            //InstrID instrId = Namer::getInstrId(instruction);
-            uint64_t fullId = Namer::getFullId(instruction);
-            //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
-            Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
-            //DEBUG(errs()<< "Calloc\n");
-            args.resize(3);
+            FullID fullId = Namer::getFullId(instruction);
+						uint32_t instrId = GET_INSTR_ID(fullId);
+            Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
+            
+						args.resize(3);
             args[0] = instruction->getOperand(0);
             args[1] = instruction->getOperand(1);
-            args[2] = fullId_;
+            args[2] = instrId_;
             if(wasBitCasted){
               Value *changeTo = Builder.CreateBitCast(objTraceCalloc, ty);
               CallInst *newCallInst = Builder.CreateCall(changeTo, args, "");
@@ -258,15 +551,14 @@ void ObjTrace::hookMallocFree(){
             }
           }
           else if(callee->getName() == "realloc"){
-            //InstrID instrId = Namer::getInstrId(instruction);
-            uint64_t fullId = Namer::getFullId(instruction);
-            //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
-            Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
-            //DEBUG(errs()<< "Realloc\n");
-            args.resize(3);
+            FullID fullId = Namer::getFullId(instruction);
+						uint32_t instrId = GET_INSTR_ID(fullId);
+            Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
+            
+						args.resize(3);
             args[0] = instruction->getOperand(0);
             args[1] = instruction->getOperand(1);
-            args[2] = fullId_;
+            args[2] = instrId_;
             if(wasBitCasted){
               Value *changeTo = Builder.CreateBitCast(objTraceRealloc, ty);
               CallInst *newCallInst = Builder.CreateCall(changeTo, args, "");
@@ -280,38 +572,16 @@ void ObjTrace::hookMallocFree(){
               listOfInstsToBeErased.push_back(instruction);
             }
           }
-          else if(callee->getName() == "free"){
-            //InstrID instrId = Namer::getInstrId(instruction);
-            uint64_t fullId = Namer::getFullId(instruction);
-            //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
-            Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
-            //DEBUG(errs()<< "Free\n");
-            args.resize(2);
-            args[0] = instruction->getOperand(0);
-            args[1] = fullId_;
-            if(wasBitCasted){
-              Value *changeTo = Builder.CreateBitCast(objTraceFree, ty);
-              CallInst *newCallInst = Builder.CreateCall(changeTo, args, "");
-              makeMetadata(newCallInst, fullId);
-              instruction->replaceAllUsesWith(newCallInst);
-              listOfInstsToBeErased.push_back(instruction);
-            } else {
-              CallInst *newCallInst = Builder.CreateCall(objTraceFree, args, "");
-              makeMetadata(newCallInst, fullId);
-              instruction->replaceAllUsesWith(newCallInst);
-              listOfInstsToBeErased.push_back(instruction);
-            }
-          }
         }
         else if(InvokeInst *callInst = dyn_cast<InvokeInst>(instruction)){
           if(callee->getName() == "malloc"){
-            //InstrID instrId = Namer::getInstrId(instruction);
-            uint64_t fullId = Namer::getFullId(instruction);
-            //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
-            Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
+            FullID fullId = Namer::getFullId(instruction);
+						uint32_t instrId = GET_INSTR_ID(fullId);
+            Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
+
             args.resize(2);
             args[0] = instruction->getOperand(0);
-            args[1] = fullId_;
+            args[1] = instrId_;
             if(wasBitCasted){
               Value *changeTo = Builder.CreateBitCast(objTraceMalloc, ty);
               CallInst *newCallInst = Builder.CreateCall(changeTo, args, "");
@@ -326,14 +596,14 @@ void ObjTrace::hookMallocFree(){
             }
           }
           else if(callee->getName() == "calloc"){
-            //InstrID instrId = Namer::getInstrId(instruction);
-            uint64_t fullId = Namer::getFullId(instruction);
-            //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
-            Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
+            FullID fullId = Namer::getFullId(instruction);
+						uint32_t instrId = GET_INSTR_ID(fullId);
+            Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
+
             args.resize(3);
             args[0] = instruction->getOperand(0);
             args[1] = instruction->getOperand(1);
-            args[2] = fullId_;
+            args[2] = instrId_;
             if(wasBitCasted){
               Value *changeTo = Builder.CreateBitCast(objTraceCalloc, ty);
               CallInst *newCallInst = Builder.CreateCall(changeTo, args, "");
@@ -348,14 +618,14 @@ void ObjTrace::hookMallocFree(){
             }
           }
           else if(callee->getName() == "realloc"){
-            //InstrID instrId = Namer::getInstrId(instruction);
-            uint64_t fullId = Namer::getFullId(instruction);
-            //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
-            Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
+            FullID fullId = Namer::getFullId(instruction);
+						uint32_t instrId = GET_INSTR_ID(fullId);
+            Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
+
             args.resize(3);
             args[0] = instruction->getOperand(0);
             args[1] = instruction->getOperand(1);
-            args[2] = fullId_;
+            args[2] = instrId_;
             if(wasBitCasted){
               Value *changeTo = Builder.CreateBitCast(objTraceRealloc, ty);
               CallInst *newCallInst = Builder.CreateCall(changeTo, args, "");
@@ -364,27 +634,6 @@ void ObjTrace::hookMallocFree(){
               listOfInstsToBeErased.push_back(instruction);
             } else {
               CallInst *newCallInst = Builder.CreateCall(objTraceRealloc, args, "");
-              makeMetadata(newCallInst, fullId);
-              instruction->replaceAllUsesWith(newCallInst);
-              listOfInstsToBeErased.push_back(instruction);
-            }
-          }
-          else if(callee->getName() == "free"){
-            //InstrID instrId = Namer::getInstrId(instruction);
-            uint64_t fullId = Namer::getFullId(instruction);
-            //Value *instructionId = ConstantInt::get(Type::getInt16Ty(Context), instrId);
-            Value *fullId_ = ConstantInt::get(Type::getInt64Ty(Context), fullId);
-            args.resize(2);
-            args[0] = instruction->getOperand(0);
-            args[1] = fullId_;
-            if(wasBitCasted){
-              Value *changeTo = Builder.CreateBitCast(objTraceFree, ty);
-              CallInst *newCallInst = Builder.CreateCall(changeTo, args, "");
-              makeMetadata(newCallInst, fullId);
-              instruction->replaceAllUsesWith(newCallInst);
-              listOfInstsToBeErased.push_back(instruction);
-            } else {
-              CallInst *newCallInst = Builder.CreateCall(objTraceFree, args, "");
               makeMetadata(newCallInst, fullId);
               instruction->replaceAllUsesWith(newCallInst);
               listOfInstsToBeErased.push_back(instruction);
@@ -401,10 +650,8 @@ void ObjTrace::hookMallocFree(){
   }
 }
 
-// From Metadata/Namer
 void ObjTrace::makeMetadata(Instruction* instruction, uint64_t Id) {
   LLVMContext &context = module->getContext();
-  //XXX: Is it okay to cast Value* to Metadata* directly?
   Constant* IdV = ConstantInt::get(Type::getInt64Ty(context), Id);
   Metadata* IdM = (Metadata*)ConstantAsMetadata::get(IdV);
   Metadata* valuesArray[] = {IdM};
@@ -416,7 +663,6 @@ void ObjTrace::makeMetadata(Instruction* instruction, uint64_t Id) {
   return;
 }
 
-//Utility
 bool ObjTrace::isUseOfGetElementPtrInst(LoadInst *ld){
   // is only Used by GetElementPtrInst ?
   return std::all_of(ld->user_begin(), ld->user_end(), [](User *user){return isa<GetElementPtrInst>(user);});
@@ -471,8 +717,6 @@ Value* ObjTrace::castTo(Value* from, Value* to, InstInsertPt &out, const DataLay
   return from;
 }
 
-//TODO:: where to put this useful function?
-//BONGJUN:: From CAMP/ContextTreeBuilder.cpp
 static const Value *getCalledValueOfIndCall(const Instruction* indCall){
   if(const CallInst *callInst = dyn_cast<CallInst>(indCall)){
     return callInst->getCalledValue();
@@ -484,8 +728,6 @@ static const Value *getCalledValueOfIndCall(const Instruction* indCall){
     assert(0 && "WTF??");
 }
 
-//TODO:: where to put this useful function?
-//BONGJUN:: From AliasAnalysis/IndirectCallAnal.cpp
 static Function *getCalledFunction_aux(Instruction* indCall){
   if(CallInst *callInst = dyn_cast<CallInst>(indCall)){
     return callInst->getCalledFunction();

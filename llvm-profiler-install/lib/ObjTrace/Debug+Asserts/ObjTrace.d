@@ -30,14 +30,16 @@
   /home/qyt/llvm-snumake/llvm/include/llvm/Support/CommandLine.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/ADT/Twine.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/Support/ErrorHandling.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/IR/Instructions.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/ADT/STLExtras.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/CallSite.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/ADT/PointerIntPair.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/Attributes.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/ADT/FoldingSet.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/ADT/iterator.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/ADT/Optional.h \
   /home/qyt/llvm-snumake/llvm-objects/include/llvm/IR/Attributes.inc \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/CallingConv.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/Instructions.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/ADT/STLExtras.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/DerivedTypes.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/Type.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/ADT/APFloat.h \
@@ -48,7 +50,6 @@
   /home/qyt/llvm-snumake/llvm/include/llvm/ADT/ilist_node.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/Value.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/Use.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/ADT/PointerIntPair.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/Value.def \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/BasicBlock.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/ADT/ilist.h \
@@ -70,11 +71,16 @@
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/OperandTraits.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/InstrTypes.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/Support/AtomicOrdering.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/IntrinsicInst.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/Constants.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/Intrinsics.h \
+  /home/qyt/llvm-snumake/llvm-objects/include/llvm/IR/Intrinsics.gen \
   /home/qyt/llvm-snumake/llvm/include/llvm/Support/raw_ostream.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/Support/Debug.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/CFG.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/ADT/GraphTraits.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/IRBuilder.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/ConstantFolder.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/IR/Constants.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/DataLayout.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/Pass.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/PassSupport.h \
@@ -86,31 +92,39 @@
   /home/qyt/llvm-snumake/llvm/include/llvm/Support/Atomic.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/PassAnalysisSupport.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/GlobalVariable.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/IR/Intrinsics.h \
-  /home/qyt/llvm-snumake/llvm-objects/include/llvm/IR/Intrinsics.gen \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/Operator.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/ValueHandle.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/IR/InstIterator.h \
-  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Utilities/InstInsertPt.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/Analysis/CallGraph.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/PassManager.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/Module.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/Comdat.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/GlobalAlias.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/GlobalIndirectSymbol.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/IR/GlobalIFunc.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/Support/CodeGen.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/PassManagerInternal.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/Support/TypeName.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/Analysis/LoopInfo.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/ADT/DenseSet.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/Analysis/LoopPass.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/LegacyPassManagers.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/Support/PrettyStackTrace.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/Analysis/Passes.h \
+  /home/qyt/llvm-snumake/llvm/include/llvm/IR/InstIterator.h \
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Utilities/InstInsertPt.h \
   /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Utilities/GlobalCtors.h \
   /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Utilities/ProfileInfo.h \
   /home/qyt/llvm-snumake/llvm/include/llvm/Support/Format.h \
   /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Metadata/Metadata.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/Analysis/LoopInfo.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/ADT/DenseSet.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/ADT/GraphTraits.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/IR/CFG.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/IR/PassManager.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/IR/PassManagerInternal.h \
-  /home/qyt/llvm-snumake/llvm/include/llvm/Support/TypeName.h \
   /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Metadata/typedefs.h \
-  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/ObjTrace/ObjTrace.h
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Metadata/LoadNamer.h \
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/ObjTrace/ObjTrace.h \
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/CAMP/campMeta.h \
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/CAMP/campCommon.h \
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/CAMP/ContextTreeBuilder.h \
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/AliasAnalysis/RecursiveFuncAnal.hpp \
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/AliasAnalysis/IndirectCallAnal.hpp \
+  /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/AliasAnalysis/LoopTraverse.hpp
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/LLVMContext.h:
 
@@ -170,9 +184,9 @@
 
 /home/qyt/llvm-snumake/llvm/include/llvm/Support/ErrorHandling.h:
 
-/home/qyt/llvm-snumake/llvm/include/llvm/IR/Instructions.h:
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/CallSite.h:
 
-/home/qyt/llvm-snumake/llvm/include/llvm/ADT/STLExtras.h:
+/home/qyt/llvm-snumake/llvm/include/llvm/ADT/PointerIntPair.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/Attributes.h:
 
@@ -185,6 +199,10 @@
 /home/qyt/llvm-snumake/llvm-objects/include/llvm/IR/Attributes.inc:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/CallingConv.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/Instructions.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/ADT/STLExtras.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/DerivedTypes.h:
 
@@ -205,8 +223,6 @@
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/Value.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/Use.h:
-
-/home/qyt/llvm-snumake/llvm/include/llvm/ADT/PointerIntPair.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/Value.def:
 
@@ -250,15 +266,25 @@
 
 /home/qyt/llvm-snumake/llvm/include/llvm/Support/AtomicOrdering.h:
 
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/IntrinsicInst.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/Constants.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/Intrinsics.h:
+
+/home/qyt/llvm-snumake/llvm-objects/include/llvm/IR/Intrinsics.gen:
+
 /home/qyt/llvm-snumake/llvm/include/llvm/Support/raw_ostream.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/Support/Debug.h:
 
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/CFG.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/ADT/GraphTraits.h:
+
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/IRBuilder.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/ConstantFolder.h:
-
-/home/qyt/llvm-snumake/llvm/include/llvm/IR/Constants.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/DataLayout.h:
 
@@ -282,17 +308,13 @@
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/GlobalVariable.h:
 
-/home/qyt/llvm-snumake/llvm/include/llvm/IR/Intrinsics.h:
-
-/home/qyt/llvm-snumake/llvm-objects/include/llvm/IR/Intrinsics.gen:
-
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/Operator.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/ValueHandle.h:
 
-/home/qyt/llvm-snumake/llvm/include/llvm/IR/InstIterator.h:
+/home/qyt/llvm-snumake/llvm/include/llvm/Analysis/CallGraph.h:
 
-/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Utilities/InstInsertPt.h:
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/PassManager.h:
 
 /home/qyt/llvm-snumake/llvm/include/llvm/IR/Module.h:
 
@@ -306,6 +328,26 @@
 
 /home/qyt/llvm-snumake/llvm/include/llvm/Support/CodeGen.h:
 
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/PassManagerInternal.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/Support/TypeName.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/Analysis/LoopInfo.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/ADT/DenseSet.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/Analysis/LoopPass.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/LegacyPassManagers.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/Support/PrettyStackTrace.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/Analysis/Passes.h:
+
+/home/qyt/llvm-snumake/llvm/include/llvm/IR/InstIterator.h:
+
+/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Utilities/InstInsertPt.h:
+
 /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Utilities/GlobalCtors.h:
 
 /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Utilities/ProfileInfo.h:
@@ -314,20 +356,20 @@
 
 /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Metadata/Metadata.h:
 
-/home/qyt/llvm-snumake/llvm/include/llvm/Analysis/LoopInfo.h:
-
-/home/qyt/llvm-snumake/llvm/include/llvm/ADT/DenseSet.h:
-
-/home/qyt/llvm-snumake/llvm/include/llvm/ADT/GraphTraits.h:
-
-/home/qyt/llvm-snumake/llvm/include/llvm/IR/CFG.h:
-
-/home/qyt/llvm-snumake/llvm/include/llvm/IR/PassManager.h:
-
-/home/qyt/llvm-snumake/llvm/include/llvm/IR/PassManagerInternal.h:
-
-/home/qyt/llvm-snumake/llvm/include/llvm/Support/TypeName.h:
-
 /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Metadata/typedefs.h:
 
+/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/Metadata/LoadNamer.h:
+
 /home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/ObjTrace/ObjTrace.h:
+
+/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/CAMP/campMeta.h:
+
+/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/CAMP/campCommon.h:
+
+/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/CAMP/ContextTreeBuilder.h:
+
+/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/AliasAnalysis/RecursiveFuncAnal.hpp:
+
+/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/AliasAnalysis/IndirectCallAnal.hpp:
+
+/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler/include/corelab/AliasAnalysis/LoopTraverse.hpp:

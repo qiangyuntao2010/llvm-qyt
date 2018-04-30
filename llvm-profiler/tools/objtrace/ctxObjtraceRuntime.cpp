@@ -20,13 +20,9 @@ static IterStack globalIterStack;
 static int globalIterStackIdx;
 static int globalIterStackIdx_overflow;
 static uint32_t currentCtx;
-static int* test1;
-static int* test2;
 
-#define MAX_LINE_SIZE 128
 #define MAX_PAIR (1024*1024*128)
 
-std::ofstream outfile("ctx_object_trace.data", std::ios::out | std::ofstream::binary);
 static unsigned nestingDepth;
 static uint16_t disableCxtChange; // enabled when 0
 static uint32_t tmpctx;
@@ -34,8 +30,8 @@ static uint64_t tmpobj;
 static uint64_t paircount;
 AllocMap *ctxAllocIdMap;
 static ctx_list* ctxpair;
+CtxObjCountMap* COCMap;
 
-x86timer ctx_t;
 
 #define getFullId(instrID) ((uint64_t)currentCtx << 32)|((uint64_t)instrID & 0x00000000FFFFFFFF)
 #define getCtxId(fullId) (uint32_t)(fullId >> 32)
@@ -51,7 +47,7 @@ void ctxObjShadowMemorySetting (void *addr, size_t size, FullID fullId){
 		*( (uint64_t *)(flipAddr + (uint64_t)(i*8)) ) = fullId;
 	}
 }
-
+/*
 extern "C"
 void pair_clean()
 {
@@ -60,18 +56,15 @@ void pair_clean()
 		outfile<<ctxpair[icount].ctx<<" "<<ctxpair[icount].obj<<" "<<ctxpair[icount].mcount<<"\n";
 	}
 	paircount=0;
-}
+}*/
 
 // Initializer/Finalizer
 extern "C"
 void ctxObjInitialize () {
-	ctxpair=(ctx_list*)malloc(sizeof(ctx_list)*MAX_PAIR);
+/*	ctxpair=(ctx_list*)malloc(sizeof(ctx_list)*MAX_PAIR);*/
+	COCMap=new CtxObjCountMap();
 	globalIterStackIdx=-1; // null
 	globalIterStackIdx_overflow = -1;
-	test1=(int*)malloc(1024*1024*128*sizeof(int));
-	test2=(int*)malloc(1024*1024*sizeof(int));
-	memset(test1,0,1024*1024*128*sizeof(int));
-	memset(test2,1,1024*1024*sizeof(int));
 	disableCxtChange = 0;
 	nestingDepth=0;
 	currentCtx = 0;
@@ -86,34 +79,30 @@ void ctxObjInitialize () {
 	//memory setting
 	ShadowMemoryManager::initialize();
 	ctxAllocIdMap = new AllocMap();
-	ctx_t.start();
 }
 
 
 extern "C"
 void ctxObjFinalize () {
 
-/*	if(outfile.is_open()){
-		outfile<<"ctxobjcount:\n";
-		for (auto e1 : *tcMap)
+std::ofstream outfile("ctx-object_count.data", std::ios::out | std::ofstream::binary);
+	
+	if(outfile.is_open())
+	{
+		for(auto e : *COCMap)
 		{
-			outfile<<e1.first<<" "<< e1.second<<"\n";
+			outfile<<e.first<<" "<<e.second<<"\n";
 		}
-			
-	}*/
-	pair_clean();
-	free(ctxpair);
+	}
 	outfile.close();
-
+	delete COCMap;
 }
 
 // Normal Context Event
 extern "C"
-void ctxObjLoopBegin (CntxID cntxID) { //arg is LocId and CntxID is uint16_t
+void ctxObjLoopBegin (CntxID cntxID, UcID uniID) { //arg is LocId and CntxID is uint16_t
 	if(disableCxtChange != 0) return;
 
-	test1[1]--;
-	test2[1024*1024]--;
 	currentCtx += cntxID;
 	
 	if(globalIterStackIdx >= STK_MAX_SIZE-1)
@@ -134,8 +123,6 @@ extern "C"
 void ctxObjLoopEnd (CntxID cntxID) {
 	if(disableCxtChange!= 0) return;
 	currentCtx -= cntxID;
-	test1[1]++;
-	test2[1024*1024]++;
 
 	if(globalIterStackIdx_overflow > -1)
 		globalIterStackIdx_overflow--;
@@ -147,8 +134,7 @@ void ctxObjLoopEnd (CntxID cntxID) {
 }
 
 extern "C"
-void ctxObjCallSiteBegin (CntxID cntxID) {
-printf("the curret is %d and local is %d\n",currentCtx,cntxID);
+void ctxObjCallSiteBegin (CntxID cntxID, UcID uniID) {
 	if(disableCxtChange == 0)
 	currentCtx += cntxID;	
 
@@ -156,7 +142,6 @@ printf("the curret is %d and local is %d\n",currentCtx,cntxID);
 
 extern "C"
 void ctxObjCallSiteEnd  (CntxID cntxID) {
-printf("the curret is %d and local is %d\n",currentCtx,cntxID);
 	if(disableCxtChange == 0)
        	currentCtx -= cntxID;
 	
@@ -181,7 +166,18 @@ void ctxObjLoadInstr (void* addr, InstrID instrId) {
 		FullID fullAllocId = *( (uint64_t *)(flipAddr) );
 		if (fullAllocId > 0 )
 		{
-			//FullID fullId = getFullId(instrId);
+			std::string tmp_str=std::to_string(currentCtx)+"_"+std::to_string(fullAllocId);
+			CtxObjCountMap::iterator it=COCMap->find(tmp_str);
+			if(it==COCMap->end())
+			{
+				COCMap->insert(std::pair<std::string,uint64_t>(tmp_str,1));
+			}
+			else
+			{
+				it->second += 1;
+			}
+		}
+	/*		FullID fullId = getFullId(instrId);
 			if(paircount==MAX_PAIR)
 			{
 				pair_clean();
@@ -209,8 +205,8 @@ void ctxObjLoadInstr (void* addr, InstrID instrId) {
 				ctxpair[paircount].ctx=currentCtx;
 				ctxpair[paircount].obj=fullAllocId;
 				ctxpair[paircount].mcount=1;
-			}
-		}
+			}*/
+		
 }
 
 extern "C"
@@ -221,8 +217,18 @@ void ctxObjStoreInstr (void* addr, InstrID instrId) {
 
 		if (fullAllocId > 0 )
 		{
+			std::string tmp_str=std::to_string(currentCtx)+"_"+std::to_string(fullAllocId);
+			CtxObjCountMap::iterator it=COCMap->find(tmp_str);
+			if(it==COCMap->end())
+			{
+				COCMap->insert(std::pair<std::string,uint64_t>(tmp_str,1));
+			}
+			else
+			{
+				it->second += 1;
+			}
 		//	FullID fullId = getFullId(instrId);
-			if(paircount==MAX_PAIR)
+	/*		if(paircount==MAX_PAIR)
 			{
 				pair_clean();
 			}
@@ -249,7 +255,7 @@ void ctxObjStoreInstr (void* addr, InstrID instrId) {
 				ctxpair[paircount].ctx=currentCtx;
 				ctxpair[paircount].obj=fullAllocId;
 				ctxpair[paircount].mcount=1;
-			}
+			}*/
 		}
 }
 

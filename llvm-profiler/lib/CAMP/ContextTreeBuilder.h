@@ -33,13 +33,17 @@ namespace corelab
 	typedef CntxID CntxIDorInstrID;//whether (CntxID or InstrID) which is given by corealb::LoadNamer.
 
 	//typedef CntxID LoopID;
-	typedef std::unordered_map<CntxID, LocalContextID> LocIDMapForLoop; // CntxID == LoopID;
+	typedef std::unordered_map<CntxID, std::pair<LocalContextID,UniqueContextID>> LocIDMapForLoop; // CntxID == LoopID;
+//	typedef std::unordered_map<CntxID, UniqueContexID> UcIDMapForLoop;
 
 	// typedef std::unordered_map<InstrID, LocalContextID> LocIDMapForCallSite;// if key is instrID of indirect call, then value is -1
 	// typedef std::unordered_map<InstrID, std::vector<LocalContextID>> LocIDMapForIndirectCalls;
 	//FIXME
-	typedef DenseMap<const Instruction *, LocalContextID> LocIDMapForCallSite;// if key is instrID of indirect call, then value is -1
+	typedef DenseMap<const Instruction *, std::pair<LocalContextID,UniqueContextID>> LocIDMapForCallSite;// if key is instrID of indirect call, then value is -1
 	typedef DenseMap<const Instruction *, std::vector<std::pair<Function *, LocalContextID>>> LocIDMapForIndirectCalls;
+	
+//	typedef DenseMap<const Instruction *, UniqueContextID> UnIDMapForCallSite;// if key is instrID of indirect call, then value is -1
+//	typedef DenseMap<const Instruction *, std::vector<std::pair<Function *, UniqueContextID>>> UcIDMapForIndirectCalls;
 
 	class ContextTree{
 		public:

@@ -65,6 +65,7 @@ void CtxObjtrace::setFunctions(Module &M)
 			"ctxObjCallSiteBegin",
 			Type::getVoidTy(Context),
 			Type::getInt16Ty(Context),
+			Type::getInt32Ty(Context),
 			(Type*)0);
 
 	ctxObjCallSiteEnd = M.getOrInsertFunction(
@@ -77,6 +78,7 @@ void CtxObjtrace::setFunctions(Module &M)
 			"ctxObjLoopBegin",
 			Type::getVoidTy(Context),
 			Type::getInt16Ty(Context),
+			Type::getInt32Ty(Context),
 			(Type*)0);
 
 	ctxObjLoopNext = M.getOrInsertFunction( 
@@ -100,28 +102,28 @@ void CtxObjtrace::setFunctions(Module &M)
 			Type::getVoidTy(Context),
 			(Type*)0);
 
-	ctxObjLoadInstr = M.getOrInsertFunction(
+ 	ctxObjLoadInstr = M.getOrInsertFunction(
       "ctxObjLoadInstr",
       Type::getVoidTy(Context), /* Return type */
       Type::getInt64Ty(Context), /* Address */
       Type::getInt32Ty(Context), /* Instr ID */
       (Type*)0);
 
-  ctxObjStoreInstr = M.getOrInsertFunction(
+  	ctxObjStoreInstr = M.getOrInsertFunction(
       "ctxObjStoreInstr",
       Type::getVoidTy(Context), /* Return type */
       Type::getInt64Ty(Context), /* Address */
       Type::getInt32Ty(Context), /* Instr ID */
       (Type*)0);
 
-  ctxObjMalloc = M.getOrInsertFunction(
+  	ctxObjMalloc = M.getOrInsertFunction(
       "ctxObjMalloc",
       Type::getInt8PtrTy(Context), /* Return type */
       Type::getInt64Ty(Context), /* allocation size */
       Type::getInt32Ty(Context), /* Instr ID */
       (Type*)0);
 
-  ctxObjCalloc = M.getOrInsertFunction(
+	ctxObjCalloc = M.getOrInsertFunction(
       "ctxObjCalloc",
       Type::getInt8PtrTy(Context), /* Return type */
       Type::getInt64Ty(Context), /* Num */
@@ -129,7 +131,7 @@ void CtxObjtrace::setFunctions(Module &M)
       Type::getInt32Ty(Context), /* Instr ID */
       (Type*)0);
 
-  ctxObjRealloc = M.getOrInsertFunction(
+  	ctxObjRealloc = M.getOrInsertFunction(
       "ctxObjRealloc",
       Type::getInt8PtrTy(Context), /* Return type */
       Type::getInt8PtrTy(Context), /* originally allocated address */
@@ -276,22 +278,25 @@ bool CtxObjtrace::runOnModule(Module& M) {
 
 	//first, traverse locIdOf_indCall
 	for(std::pair<CntxID, const Loop *> loopID : *loopOfLoopID){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first]);
-		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first].first);
+		Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal,uniIDVal);
 	}
 
 
 
 	for( std::pair<const Instruction *, std::vector<std::pair<Function *, LocalContextID>>> &indCall : *locIdOf_indCall){
 		Value *locIDVal = addTargetComparisonCodeForIndCall(indCall.first, indCall.second);
-		addProfilingCodeForCallSite(const_cast<Instruction *>(indCall.first), locIDVal);
+		Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+		addProfilingCodeForCallSite(const_cast<Instruction *>(indCall.first), locIDVal,uniIDVal);
 	}
 
 
-	for( std::pair<const Instruction *, LocalContextID> &normalCallSite : *locIdOf_callSite ){
-		if (normalCallSite.second != (LocalContextID)(-1) ){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second);
-		addProfilingCodeForCallSite(const_cast<Instruction *>(normalCallSite.first), locIDVal);
+	for( std::pair<const Instruction *, std::pair<LocalContextID, UniqueContextID>> &normalCallSite : *locIdOf_callSite ){
+		if (normalCallSite.second.first != (LocalContextID)(-1) ){
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second.first);
+		Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+		addProfilingCodeForCallSite(const_cast<Instruction *>(normalCallSite.first), locIDVal, uniIDVal);
 		}
 	}	
 
@@ -300,7 +305,7 @@ bool CtxObjtrace::runOnModule(Module& M) {
 	return false;
 }
 
-void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
+void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal, Value *uniIDVal){
 	// get the pre-header, header and exitblocks
 	BasicBlock *header = L->getHeader();
 	BasicBlock *preHeader = L->getLoopPreheader();
@@ -313,8 +318,9 @@ void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
 
 	// call beginLoop at the loop preheader
 	// it will push the conext
-	args.resize(1);
+	args.resize(2);
 	args[0] = locIDVal; 
+	args[1] = uniIDVal;
 	assert(!preHeader->empty() && "ERROR: preheader of loop doesnt have TerminatorInst");
 	CallInst::Create(ctxObjLoopBegin, args, "", preHeader->getTerminator());
 
@@ -394,7 +400,7 @@ void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
 
 Value *CtxObjtrace::addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs){
 	assert(isa<InvokeInst>(invokeOrCallInst)||isa<CallInst>(invokeOrCallInst));
-	assert((*locIdOf_callSite)[invokeOrCallInst] == (LocalContextID)(-1));
+	assert((*locIdOf_callSite)[invokeOrCallInst].first == (LocalContextID)(-1));
 	
 	LLVMContext &llvmContext = invokeOrCallInst->getModule()->getContext();
 	const DataLayout &dataLayout = module->getDataLayout();
@@ -442,16 +448,19 @@ Value *CtxObjtrace::addTargetComparisonCodeForIndCall(const Instruction *invokeO
 	return locIDVal;
 }
 
-void CtxObjtrace::addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal){
+void CtxObjtrace::addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal, Value *uniIDVal){
 	std::vector<Value*> args(0);
-	args.resize(1);
+	args.resize(2);
 	args[0] = locIDVal;
+	args[1] = uniIDVal;
 
 	Constant* ContextBegin = ctxObjCallSiteBegin;
 	Constant* ContextEnd = ctxObjCallSiteEnd;
 
 	CallInst::Create(ContextBegin, args, "", invokeOrCallInst);
 
+	args.resize(1);
+	args[0] = locIDVal;
 	auto found = std::find_if(pCxtTree->begin(), pCxtTree->end(), [invokeOrCallInst](ContextTreeNode *p){return p->getCallInst() == invokeOrCallInst;});
 	assert(found != pCxtTree->end());
 	if((*found)->isRecursiveCallSiteNode()){

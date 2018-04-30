@@ -199,10 +199,10 @@ void ContextTreeBuilder::makeNodeOfCallSite(Instruction *invokeOrCallinst, Conte
 				// errs()<<"]\n";
 				
 				//make sure locIdOf_callSite[invokeOrCallinst] == -1
-				locIdOf_callSite[invokeOrCallinst] = -1;
+				locIdOf_callSite[invokeOrCallinst].first = -1;
 				for(Function *oneOfCallees : possibleTargetOf[invokeOrCallinst]){
 					ContextTreeNode *pNewNode = makeNodeOfCallSite_aux(oneOfCallees, invokeOrCallinst, parent);
-					locIdOf_indCall[invokeOrCallinst].push_back( std::make_pair(oneOfCallees, pNewNode->getLocID()) );
+					locIdOf_indCall[invokeOrCallinst].push_back( std::make_pair(oneOfCallees, pNewNode->getLocID() ));
 				}
 			}
 		}
@@ -326,7 +326,7 @@ void ContextTreeBuilder::printContextTree(){
 	errs()<<"######local ID Map (size: "<<locIdOf_callSite.size() + locIdOf_loop.size()<<")#########\n";
 	for (auto it = locIdOf_callSite.begin(); it != locIdOf_callSite.end(); ++it){
 		errs()<<"[ inst: "<<*it->first<<" ("<<it->first<<")"<<", locID: ";
-		if(it->second == (LocalContextID)(-1)){
+		if(it->second.first == (LocalContextID)(-1)){
 			errs()<<"<";
 			std::for_each(locIdOf_indCall[it->first].begin(), locIdOf_indCall[it->first].end(), [](std::pair<Function *, LocalContextID> p){
 				errs()<<"("<<p.first->getName()<<":"<<p.second<<"), ";
@@ -335,11 +335,11 @@ void ContextTreeBuilder::printContextTree(){
 		errs()<<"\n";
 		}
 		else
-			errs()<<it->second<<" ]\n";
+			errs()<<it->second.first<<" ]\n";
 	}
 
 	for (auto it = locIdOf_loop.begin(); it != locIdOf_loop.end(); ++it){
-		errs()<<"[ CntxID: "<<it->first<<", locID: "<<it->second<<" ]\n";
+		errs()<<"[ CntxID: "<<it->first<<", locID: "<<it->second.first<<" ]\n";
 	}
 
 	errs()<<"######loop ID Map (size: "<<loopIdOf.size()<<")#########\n";
@@ -466,19 +466,22 @@ void ContextTree::addCallSiteInfo(const Instruction *invokeOrCallInst_, Function
 	func = f;
 	auto found = locIdOf_callSite.find(invokeOrCallInst);
 	if(found != locIdOf_callSite.end()){//found it!
-		if(found->second != (LocalContextID)(-1)) // if this is not multiple target indirect call case
+		if(found->second.first != (LocalContextID)(-1)) // if this is not multiple target indirect call case
 			//assert(found->second == locID && "ERROR: LocalContextID mismatch (call site case)!!!!");
-			if(found->second != locID){
+			if(found->second.first != locID){
 				errs()<<"I'm dying ..\n";
-				errs()<<"Inst: " <<*invokeOrCallInst<<", locID:"<<locID<<", found locID: "<<found->second<<", ucID:"<<ucID<<"\n";
+				errs()<<"Inst: " <<*invokeOrCallInst<<", locID:"<<locID<<", found locID: "<<found->second.first<<", ucID:"<<ucID<<"\n";
 				assert(0);
 			}
 	}
-	else{
-		locIdOf_callSite[invokeOrCallInst] = locID;
+	else{	
+		locIdOf_callSite[invokeOrCallInst].first = locID;//mark locID
+		locIdOf_callSite[invokeOrCallInst].second = ucID;//mark locID
 	}
 
 }
+
+
 void ContextTree::addLoopInfo(Loop *l, CntxID cntxID_, LocIDMapForLoop &locIdOf_loop){
 	assert(!isCallSite);
 	assert(parent);
@@ -486,10 +489,11 @@ void ContextTree::addLoopInfo(Loop *l, CntxID cntxID_, LocIDMapForLoop &locIdOf_
 	cntxID = cntxID_;
 	auto found = locIdOf_loop.find(cntxID);
 	if(found != locIdOf_loop.end()){//found it!
-		assert(found->second == locID && "ERROR: LocalContextID mismatch(Loop case)!!!!");
+		assert(found->second.first == locID && "ERROR: LocalContextID mismatch(Loop case)!!!!");
 	}
 	else{
-		locIdOf_loop[cntxID] = locID;
+		locIdOf_loop[cntxID].first = locID;//mark locID
+		locIdOf_loop[cntxID].second = ucID;//mark locID
 	}
 }
 

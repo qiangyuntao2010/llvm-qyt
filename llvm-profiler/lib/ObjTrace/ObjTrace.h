@@ -1,67 +1,106 @@
-#ifndef LLVM_CORELAB_OBJTRACE_H
-#define LLVM_CORELAB_OBJTRACE_H
+#ifndef LLVM_CORELAB_CTX_OBJ_H
+#define LLVM_CORELAB_CTX_OBJ_H
 
 #include "llvm/Pass.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Constants.h"
 
-//#include "corelab/Profilers/campMeta.h"
-//#include "corelab/Profilers/ContextTreeBuilder.h"
-//#include "corelab/AliasAnalysis/LoopTraverse.hpp"
+#include "corelab/Utilities/InstInsertPt.h"
+#include "corelab/CAMP/campMeta.h"
+#include "corelab/CAMP/ContextTreeBuilder.h"
+#include "corelab/AliasAnalysis/LoopTraverse.hpp"
 #include <fstream>
 #include <map>
 
-#ifndef DEBUG_TYPE
-  #define DEBUG_TYPE "objtrace"
-#endif
 
+namespace corelab
+{
+	using namespace llvm;
+	using namespace std;
 
-namespace corelab {
-  using namespace llvm;
-  using namespace std;
+	typedef uint64_t FullID;
 
-  typedef uint16_t InstrID;
-  typedef uint64_t FullID;
+	class ObjTrace  : public ModulePass
+	{
+		public:
+			typedef std::vector<const Instruction *> ExternalCallList;
+			typedef std::vector<const Instruction *> IndirectCallList;
+			typedef CntxID LoopID;
 
-  class ObjTrace : public ModulePass {
-    public:
-      bool runOnModule(Module& M);
+			bool runOnModule(Module& M);
 
-      virtual void getAnalysisUsage(AnalysisUsage &AU) const {
-        AU.addRequired< Namer >();
-        AU.setPreservesAll();
-      }
-
-      const char *getPassName() const { return "ObjTrace"; }
-
-      static char ID;
-      ObjTrace() : ModulePass(ID) {}
-
-			//Utility
-
+			// Context Tree approach
 			bool isUseOfGetElementPtrInst(LoadInst *ld);
+			void addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal, Value *uniIDVal);
+			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal, Value *uniIDVal);
+			Value *addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs);
+
+			// Utility
 			Value* castTo(Value* from, Value* to, InstInsertPt &out, const DataLayout *dl);
 
-    private:
-      Module *module;
+			virtual void getAnalysisUsage(AnalysisUsage &AU) const
+			{
+				AU.addRequired< Namer >();
+				AU.addRequired< ContextTreeBuilder >();
+				AU.setPreservesAll();
+			}
 
-      Constant *objTraceInitialize;
-      Constant *objTraceFinalize;
+			const char *getPassName() const { return "Objtrace"; }
 
-      Constant *objTraceLoadInstr;
-      Constant *objTraceStoreInstr;
+			static char ID;
+			ObjTrace() : ModulePass(ID) {}
 
-      Constant *objTraceMalloc;
-      Constant *objTraceCalloc;
-      Constant *objTraceRealloc;
-      Constant *objTraceFree;
+			private:
+			
+			Module *module;
+			LoadNamer *pLoadNamer;
+			ContextTreeBuilder *cxtTreeBuilder;
+			std::vector<ContextTreeNode *> *pCxtTree;
+			ExternalCallList externalCalls;
+			IndirectCallList indirectCalls;
+			
 
-      void setFunctions(Module &M);
-      void setIniFini(Module &M);
+			//### Member variables for Context Tree Approach ###
+			//this is given by ContextTreeBuilder pass
+			LocIDMapForCallSite *locIdOf_callSite;  // if key is instrID of indirect call, then value is -1
+			LocIDMapForIndirectCalls *locIdOf_indCall;
+			LocIDMapForLoop *locIdOf_loop;
 
-      void hookMallocFree();
-      void makeMetadata(Instruction* Instruction, uint64_t id); // From Metadata/Namer
-  }; // class
-} // namespace
+
+			/* Functions */
+
+			// initialize, finalize functions
+			Constant *objTraceInitialize;
+			Constant *objTraceFinalize;
+
+			// functions for context 
+			Constant *objTraceCallSiteBegin;
+			Constant *objTraceCallSiteEnd;
+			Constant *objTraceLoopBegin;
+			Constant *objTraceLoopNext;
+			Constant *objTraceLoopEnd;
+
+			Constant *objTraceDisableCtxtChange;
+			Constant *objTraceEnableCtxtChange;
+
+/*			Constant *objTraceLoadInstr;
+		        Constant *objTraceStoreInstr;
+*/
+		        Constant *objTraceMalloc;
+		        Constant *objTraceCalloc;
+		        Constant *objTraceRealloc;
+
+
+			void setFunctions(Module &M);
+			void setIniFini(Module &M);
+			bool loadMetadata();
+			void hookMallocFree();
+      
+			void makeMetadata(Instruction* Instruction, uint64_t id);
+
+			FuncID getFunctionId(Function &F);
+			CntxID getLoopContextId(Loop *L, FuncID functionId);
+	};
+}
 
 #endif

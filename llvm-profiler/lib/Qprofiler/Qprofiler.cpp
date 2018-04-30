@@ -29,22 +29,51 @@
 #include <vector>
 #include <list>
 #include <cstdlib>
+#include <stdio.h>
+#include <malloc.h>
+#include <fstream>
+#include <string.h>
+#include <stdlib.h>
 
 //#define CAMP_INSTALLER_DEBUG
 //#define CAMP_CONTEXT_STACK_APPROACH
 #define CAMP_CONTEXT_TREE_APPROACH
 
 #define GET_INSTR_ID(fullId) ((uint32_t) ((fullId >> 16)& 0xFFFFFFFF))
+#define NUM_CTX 228
 
 using namespace corelab;
 
 char Qprofiler::ID = 0;
 static RegisterPass<Qprofiler> X("Qprofiler", "qyt profiler", false, false);
 
+static int ucctx[NUM_CTX];
 //Utils
 static const Value *getCalledValueOfIndCall(const Instruction* indCall);
 Instruction *getProloguePosition(Instruction *inst);
 static Function *getCalledFunction_aux(Instruction* indCall);
+
+void Qprofiler::read()
+{
+	FILE *input=fopen("/home/qyt/llvm-snumake/test/spec2006/433.milc/src/data/timemerge/timemerge90","r");
+	assert(input!=NULL&&"READ FAIL!");
+	int i=0;
+	char a[32];
+	while(!feof(input))
+	{
+		a[0]='\0';
+		fgets(a,32,input);
+		if(a[0]=='\0')
+		{
+			break;
+		}
+		ucctx[i]=atoi(strtok(a," "));
+		i++;
+	}
+	fclose(input);
+}	
+
+
 
 
 void Qprofiler::setFunctions(Module &M)
@@ -65,6 +94,7 @@ void Qprofiler::setFunctions(Module &M)
 			"QproCallSiteBegin",
 			Type::getVoidTy(Context),
 			Type::getInt16Ty(Context),
+			Type::getInt32Ty(Context),
 			(Type*)0);
 
 	QproCallSiteEnd = M.getOrInsertFunction(
@@ -77,6 +107,7 @@ void Qprofiler::setFunctions(Module &M)
 			"QproLoopBegin",
 			Type::getVoidTy(Context),
 			Type::getInt16Ty(Context),
+			Type::getInt32Ty(Context),
 			(Type*)0);
 
 	QproLoopNext = M.getOrInsertFunction( 
@@ -98,6 +129,29 @@ void Qprofiler::setFunctions(Module &M)
 	QproEnableCtxtChange = M.getOrInsertFunction(
 			"QproEnableCtxtChange",
 			Type::getVoidTy(Context),
+			(Type*)0);
+
+	QproMalloc = M.getOrInsertFunction(
+			"QproMalloc",
+			Type::getInt8PtrTy(Context),
+			Type::getInt64Ty(Context),
+			Type::getInt32Ty(Context),
+			(Type*)0);
+
+	QproCalloc = M.getOrInsertFunction(
+			"QproCalloc",
+			Type::getInt8PtrTy(Context),
+			Type::getInt64Ty(Context),
+			Type::getInt64Ty(Context),
+			Type::getInt32Ty(Context),
+			(Type*)0);
+
+	QproRealloc = M.getOrInsertFunction(
+			"QproRealloc",
+			Type::getInt8PtrTy(Context),
+			Type::getInt8PtrTy(Context),
+			Type::getInt64Ty(Context),
+			Type::getInt32Ty(Context),
 			(Type*)0);
 	return;
 }
@@ -141,89 +195,6 @@ bool Qprofiler::runOnModule(Module& M) {
 	setFunctions(M);
 	module = &M;
 	LLVMContext &Context = M.getContext();
-/*	
-	#ifdef CAMP_CONTEXT_TREE_APPROACH
-
-	cxtTreeBuilder = &getAnalysis< ContextTreeBuilder >();
-
-	pCxtTree = cxtTreeBuilder->getContextTree();
-	locIdOf_callSite = cxtTreeBuilder->getLocIDMapForCallSite();
-	locIdOf_indCall = cxtTreeBuilder->getLocIDMapForIndirectCalls();
-	locIdOf_loop = cxtTreeBuilder->getLocIDMapForLoop();
-	ContextTreeBuilder::LoopIdOf *loopIdOf = cxtTreeBuilder->getLoopIDMap();
-	ContextTreeBuilder::LoopOfCntxID *loopOfLoopID = cxtTreeBuilder->getLoopMapOfCntxID();
-
-
-	//first, traverse locIdOf_indCall
-	for(std::pair<CntxID, const Loop *> loopID : *loopOfLoopID){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first]);
-		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
-	}
-
-
-
-	for( std::pair<const Instruction *, std::vector<std::pair<Function *, LocalContextID>>> &indCall : *locIdOf_indCall){
-		Value *locIDVal = addTargetComparisonCodeForIndCall(indCall.first, indCall.second);
-		addProfilingCodeForCallSite(const_cast<Instruction *>(indCall.first), locIDVal);
-	}
-
-
-	for( std::pair<const Instruction *, LocalContextID> &normalCallSite : *locIdOf_callSite ){
-		if (normalCallSite.second != (LocalContextID)(-1) ){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second);
-		addProfilingCodeForCallSite(const_cast<Instruction *>(normalCallSite.first), locIDVal);
-		}
-	}	
-	
-#endif //CAMP_CONTEXT_TREE_APPROACH
-*/
-/*
-  for(Module::iterator fi = M.begin(), fe = M.end(); fi != fe; ++fi) {
-    Function &F = *fi;
-    const DataLayout &dataLayout = module->getDataLayout();
-    std::vector<Value*> args(0);
-    if (F.isDeclaration()) continue;	// there is no definition then skip this function
-    for (inst_iterator I = inst_begin(F), E = inst_end(F); I != E; ++I){
-      Instruction *instruction = &*I;
-      // For each load instructions
-      if(LoadInst *ld = dyn_cast<LoadInst>(instruction)) {
-        if(isUseOfGetElementPtrInst(ld) == false){
-          args.resize (2);
-          Value *addr = ld->getPointerOperand();
-          Value *temp = ConstantInt::get(Type::getInt64Ty(Context), 0);
-          InstInsertPt out = InstInsertPt::Before(ld);
-          addr = castTo(addr, temp, out, &dataLayout);
-
-          FullID fullId = Namer::getFullId(instruction);
-					uint32_t instrId = GET_INSTR_ID(fullId);
-          Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
-					
-
-          args[0] = addr;
-          args[1] = instrId_;
-          CallInst::Create(QproLoadInstr, args, "", ld);
-        }
-      }
-      // For each store instructions
-      else if (StoreInst *st = dyn_cast<StoreInst>(instruction)) {
-        args.resize (2);
-        Value *addr = st->getPointerOperand();
-        Value *temp = ConstantInt::get(Type::getInt64Ty(Context), 0);
-        InstInsertPt out = InstInsertPt::Before(st);
-        addr = castTo(addr, temp, out, &dataLayout);
-
-        FullID fullId = Namer::getFullId(instruction);
-				uint32_t instrId = GET_INSTR_ID(fullId);
-        Value *instrId_ = ConstantInt::get(Type::getInt32Ty(Context), instrId);
-
-        args[0] = addr;
-        args[1] = instrId_;
-        CallInst::Create(QproStoreInstr, args, "", st);
-      }
-		}
-	}
-
-*/
 //	hookMallocFree();
 	
 	cxtTreeBuilder = &getAnalysis< ContextTreeBuilder >();
@@ -235,25 +206,58 @@ bool Qprofiler::runOnModule(Module& M) {
 	ContextTreeBuilder::LoopIdOf *loopIdOf = cxtTreeBuilder->getLoopIDMap();
 	ContextTreeBuilder::LoopOfCntxID *loopOfLoopID = cxtTreeBuilder->getLoopMapOfCntxID();
 
-
+	read();
 	//first, traverse locIdOf_indCall
 	for(std::pair<CntxID, const Loop *> loopID : *loopOfLoopID){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first]);
-		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+		int v=0;
+		for (v=0;v<NUM_CTX;v++)
+		{
+			if(ucctx[v]==(*locIdOf_loop)[loopID.first].second)
+			{
+				Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()),(*locIdOf_loop)[loopID.first].first);
+				Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), (*locIdOf_loop)[loopID.first].second);
+				addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal, uniIDVal);
+				break;
+			}
+		}
+		if(v==NUM_CTX)
+		{
+			Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), ((*locIdOf_loop)[loopID.first].first));
+			Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+			addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal, uniIDVal);
+		}
 	}
-
-
 
 	for( std::pair<const Instruction *, std::vector<std::pair<Function *, LocalContextID>>> &indCall : *locIdOf_indCall){
 		Value *locIDVal = addTargetComparisonCodeForIndCall(indCall.first, indCall.second);
-		addProfilingCodeForCallSite(const_cast<Instruction *>(indCall.first), locIDVal);
+		Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+		addProfilingCodeForCallSite(const_cast<Instruction *>(indCall.first), locIDVal, uniIDVal);
 	}
 
 
-	for( std::pair<const Instruction *, LocalContextID> &normalCallSite : *locIdOf_callSite ){
-		if (normalCallSite.second != (LocalContextID)(-1) ){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second);
-		addProfilingCodeForCallSite(const_cast<Instruction *>(normalCallSite.first), locIDVal);
+	for( std::pair<const Instruction *, std::pair<LocalContextID,UniqueContextID>> &normalCallSite : *locIdOf_callSite ){
+		if (normalCallSite.second.first != (LocalContextID)(-1) ){
+		int v=0;
+		for (v=0;v<NUM_CTX;v++)
+		{
+			if(ucctx[v]==normalCallSite.second.second)
+			{
+				Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second.first);
+				Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), normalCallSite.second.second);
+				addProfilingCodeForCallSite(const_cast<Instruction*>(normalCallSite.first), locIDVal, uniIDVal);
+				break;
+			}
+		}
+		if(v==NUM_CTX)
+		{
+				Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second.first);
+				Value *uniIDVal = ConstantInt::get(Type::getInt32Ty(M.getContext()), 0);
+				addProfilingCodeForCallSite(const_cast<Instruction *> (normalCallSite.first), locIDVal, uniIDVal);
+		}
+
+
+		//Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second.first);
+		//addProfilingCodeForCallSite(const_cast<Instruction *>(normalCallSite.first), locIDVal);
 		}
 	}	
 
@@ -262,7 +266,7 @@ bool Qprofiler::runOnModule(Module& M) {
 	return false;
 }
 
-void Qprofiler::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
+void Qprofiler::addProfilingCodeForLoop(Loop *L, Value *locIDVal, Value *uniIDVal){
 	// get the pre-header, header and exitblocks
 	BasicBlock *header = L->getHeader();
 	BasicBlock *preHeader = L->getLoopPreheader();
@@ -271,12 +275,13 @@ void Qprofiler::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
 
 	
 	// set loopID as an argument
-	std::vector<Value*> args(1); 
+	std::vector<Value*> args(0); 
 
 	// call beginLoop at the loop preheader
 	// it will push the conext
-	args.resize(1);
-	args[0] = locIDVal; 
+	args.resize(2);
+	args[0] = locIDVal;
+	args[1] = uniIDVal;
 	assert(!preHeader->empty() && "ERROR: preheader of loop doesnt have TerminatorInst");
 	CallInst::Create(QproLoopBegin, args, "", preHeader->getTerminator());
 
@@ -356,7 +361,7 @@ void Qprofiler::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
 
 Value *Qprofiler::addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs){
 	assert(isa<InvokeInst>(invokeOrCallInst)||isa<CallInst>(invokeOrCallInst));
-	assert((*locIdOf_callSite)[invokeOrCallInst] == (LocalContextID)(-1));
+	assert((*locIdOf_callSite)[invokeOrCallInst].first == (LocalContextID)(-1));
 	
 	LLVMContext &llvmContext = invokeOrCallInst->getModule()->getContext();
 	const DataLayout &dataLayout = module->getDataLayout();
@@ -404,15 +409,19 @@ Value *Qprofiler::addTargetComparisonCodeForIndCall(const Instruction *invokeOrC
 	return locIDVal;
 }
 
-void Qprofiler::addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal){
+void Qprofiler::addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal, Value *uniIDVal){
 	std::vector<Value*> args(0);
-	args.resize(1);
+	args.resize(2);
 	args[0] = locIDVal;
+	args[1] = uniIDVal;
 
 	Constant* ContextBegin = QproCallSiteBegin;
 	Constant* ContextEnd = QproCallSiteEnd;
 
 	CallInst::Create(ContextBegin, args, "", invokeOrCallInst);
+	
+	args.resize(1);
+	args[0] = locIDVal;
 
 	auto found = std::find_if(pCxtTree->begin(), pCxtTree->end(), [invokeOrCallInst](ContextTreeNode *p){return p->getCallInst() == invokeOrCallInst;});
 	assert(found != pCxtTree->end());
@@ -470,7 +479,7 @@ void Qprofiler::addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value
 	}
 }
 
-/*void Qprofiler::hookMallocFree(){
+void Qprofiler::hookMallocFree(){
   LLVMContext &Context = module->getContext();
   //const DataLayout &dataLayout = module->getDataLayout();
   std::list<Instruction*> listOfInstsToBeErased;
@@ -639,7 +648,7 @@ void Qprofiler::addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value
   for(auto I: listOfInstsToBeErased) {
     I->eraseFromParent();
   }
-}*/
+}
 
 void Qprofiler::makeMetadata(Instruction* instruction, uint64_t Id) {
   LLVMContext &context = module->getContext();

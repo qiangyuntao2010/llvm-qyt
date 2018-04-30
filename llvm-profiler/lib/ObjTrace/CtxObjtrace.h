@@ -31,8 +31,8 @@ namespace corelab
 
 			// Context Tree approach
 			bool isUseOfGetElementPtrInst(LoadInst *ld);
-			void addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal);
-			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal);
+			void addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal, Value *uniIDVal);
+			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal, Value *uniIDVal);
 			Value *addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs);
 
 			// Utility

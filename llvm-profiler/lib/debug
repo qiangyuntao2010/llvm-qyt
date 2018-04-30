@@ -1,0 +1,28 @@
+Qprofiler/Qprofiler.h:35:			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal, Value *uniIDVal);
+Binary file Qprofiler/.Qprofiler.cpp.swp matches
+Qprofiler/Qprofiler.cpp:217:				addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal, uniIDVal);
+Qprofiler/Qprofiler.cpp:225:			addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal, uniIDVal);
+Qprofiler/Qprofiler.cpp:230:	//	addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal, uniIDVal);
+Qprofiler/Qprofiler.cpp:253:void Qprofiler::addProfilingCodeForLoop(Loop *L, Value *locIDVal, Value *uniIDVal){
+tags:241:addProfilingCodeForLoop	CAMP/CAMP.cpp	/^void CAMPInstaller::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:CAMPInstaller
+tags:242:addProfilingCodeForLoop	CAMP/CampExectime.cpp	/^void CAMPExectime::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:CAMPExectime
+tags:243:addProfilingCodeForLoop	ObjTrace/CtxObjtrace.cpp	/^void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:CtxObjtrace
+tags:244:addProfilingCodeForLoop	ObjTrace/backup/original/CtxObjtrace.cpp	/^void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:CtxObjtrace
+tags:245:addProfilingCodeForLoop	Qprofiler/Qprofiler.cpp	/^void Qprofiler::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:Qprofiler
+CAMP/CAMP.cpp:327:		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+CAMP/CAMP.cpp:455:void CAMPInstaller::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
+CAMP/tags:106:addProfilingCodeForLoop	CAMP.cpp	/^void CAMPInstaller::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:CAMPInstaller
+CAMP/tags:107:addProfilingCodeForLoop	CampExectime.cpp	/^void CAMPExectime::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:CAMPExectime
+CAMP/CampExectime.h:41:			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal);
+CAMP/CAMP.h:42:			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal);
+CAMP/CampExectime.cpp:190:		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+CAMP/CampExectime.cpp:217:void CAMPExectime::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
+ObjTrace/CtxObjtrace.h:35:			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal);
+ObjTrace/tags:30:addProfilingCodeForLoop	CtxObjtrace.cpp	/^void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){$/;"	f	class:CtxObjtrace
+ObjTrace/backup/original/CtxObjtrace.h:35:			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal);
+ObjTrace/backup/original/CtxObjtrace.cpp:198:		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+ObjTrace/backup/original/CtxObjtrace.cpp:280:		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+ObjTrace/backup/original/CtxObjtrace.cpp:303:void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
+ObjTrace/CtxObjtrace.cpp:160:		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+ObjTrace/CtxObjtrace.cpp:242:		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
+ObjTrace/CtxObjtrace.cpp:265:void CtxObjtrace::addProfilingCodeForLoop(Loop *L, Value *locIDVal){

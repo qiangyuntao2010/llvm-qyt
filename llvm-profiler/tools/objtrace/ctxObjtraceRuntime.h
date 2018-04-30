@@ -17,25 +17,27 @@ typedef uint32_t IterRelation;
 #endif 
 
 typedef uint16_t CntxID;
+typedef uint32_t UcID;
 typedef uint32_t InstrID;
 typedef uint64_t FullID;
 
-typedef std::set<size_t> AllocInfo;
-typedef std::map<FullID,AllocInfo> AllocMap;
-typedef struct _CTX{
+typedef struct _Ctxlist{
 	uint32_t ctx;
 	uint64_t obj;
 	uint64_t mcount;
-}ctx_list;
-typedef std::map<std::string,uint64_t> TimectxMap;
+} ctx_list;
+
+
 typedef union IterStack{
 	uint8_t i8[STK_MAX_SIZE];
 	uint64_t i64[STK_MAX_SIZE_DIV_BY_8];
 } IterStack;
 
+typedef std::set<size_t> AllocInfo;
+typedef std::map<FullID, AllocInfo> AllocMap;
+typedef std::map<std::string, uint64_t> CtxObjCountMap;
 // Initializer/Finalizer
 extern "C" void ctxObjInitialize ();
-extern "C" void pair_clean();
 extern "C" void ctxObjFinalize ();
 		
 // Memory Event
@@ -43,11 +45,11 @@ extern "C" void ctxObjLoadInstr (void* addr, InstrID instrId);
 extern "C" void ctxObjStoreInstr (void* addr, InstrID instrId);
 		
 // Normal Context Event
-extern "C" void ctxObjLoopBegin (CntxID cntxID);
+extern "C" void ctxObjLoopBegin (CntxID cntxIDi, UcID uniID);
 extern "C" void ctxObjLoopNext ();
 extern "C" void ctxObjLoopEnd (CntxID cntxID);
 
-extern "C" void ctxObjCallSiteBegin (CntxID cntxID);
+extern "C" void ctxObjCallSiteBegin (CntxID cntxID, UcID uniID);
 extern "C" void ctxObjCallSiteEnd  (CntxID cntxID);
 
 

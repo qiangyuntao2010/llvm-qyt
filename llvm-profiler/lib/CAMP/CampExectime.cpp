@@ -186,7 +186,7 @@ bool CAMPExectime::runOnModule(Module& M) {
 
 	//first, traverse locIdOf_indCall
 	for(std::pair<CntxID, const Loop *> loopID : *loopOfLoopID){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first]);
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), (*locIdOf_loop)[loopID.first].first);
 		addProfilingCodeForLoop(const_cast<Loop *>(loopID.second), locIDVal);
 	}
 
@@ -198,9 +198,9 @@ bool CAMPExectime::runOnModule(Module& M) {
 	}
 
 
-	for( std::pair<const Instruction *, LocalContextID> &normalCallSite : *locIdOf_callSite ){
-		if (normalCallSite.second != (LocalContextID)(-1) ){
-		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second);
+	for( std::pair<const Instruction *, std::pair<LocalContextID,UniqueContextID>> &normalCallSite : *locIdOf_callSite ){
+		if (normalCallSite.second.first != (LocalContextID)(-1) ){
+		Value *locIDVal = ConstantInt::get(Type::getInt16Ty(M.getContext()), normalCallSite.second.first);
 		addProfilingCodeForCallSite(const_cast<Instruction *>(normalCallSite.first), locIDVal);
 		}
 	}
@@ -308,7 +308,7 @@ void CAMPExectime::addProfilingCodeForLoop(Loop *L, Value *locIDVal){
 
 Value *CAMPExectime::addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs){
 	assert(isa<InvokeInst>(invokeOrCallInst)||isa<CallInst>(invokeOrCallInst));
-	assert((*locIdOf_callSite)[invokeOrCallInst] == (LocalContextID)(-1));
+	assert((*locIdOf_callSite)[invokeOrCallInst].first == (LocalContextID)(-1));
 	/*
 	// FIXME
 	if((*locIdOf_callSite)[invokeOrCallInst] == (LocalContextID)(-1)) {

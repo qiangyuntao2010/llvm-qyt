@@ -28,11 +28,11 @@ namespace corelab
 			typedef CntxID LoopID;
 
 			bool runOnModule(Module& M);
-
+			void read();
 			// Context Tree approach
 			bool isUseOfGetElementPtrInst(LoadInst *ld);
-			void addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal);
-			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal);
+			void addProfilingCodeForCallSite(Instruction *invokeOrCallInst, Value *locIDVal, Value *uniIDVal);
+			void addProfilingCodeForLoop(Loop *loop, Value *locIDVal, Value *uniIDVal);
 			Value *addTargetComparisonCodeForIndCall(const Instruction *invokeOrCallInst, std::vector<std::pair<Function *, LocalContextID>> &targetLocIDs);
 
 			// Utility
@@ -45,7 +45,7 @@ namespace corelab
 				AU.setPreservesAll();
 			}
 
-			const char *getPassName() const { return "Cxt-Objtrace"; }
+			const char *getPassName() const { return "Qprofiler";}
 
 			static char ID;
 			Qprofiler() : ModulePass(ID) {}
@@ -84,17 +84,17 @@ namespace corelab
 			Constant *QproEnableCtxtChange;
 
 	/*		Constant *QproLoadInstr;
-      Constant *QproStoreInstr;
+      Constant *QproStoreInstr;*/
 
-      Constant *QproMalloc;
-      Constant *QproCalloc;
-      Constant *QproRealloc;*/
+  			Constant *QproMalloc;
+      			Constant *QproCalloc;
+      			Constant *QproRealloc;
 
 
 			void setFunctions(Module &M);
 			void setIniFini(Module &M);
 			bool loadMetadata();
-//			void hookMallocFree();
+			void hookMallocFree();
       
 			void makeMetadata(Instruction* Instruction, uint64_t id);
 
