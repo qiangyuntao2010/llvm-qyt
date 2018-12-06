@@ -17,8 +17,9 @@ using namespace llvm;
 using namespace corelab;
 
 char IndirectCallAnal::ID = 0;
+//the last operand of the RegisterPass is is_analysis, default value is true but we need to make it into true here
 static RegisterPass<IndirectCallAnal> X("indirect-call-anal", "indirect call site analysis.", false, true);
-
+//the getCalledValue function can get the operand
 //TODO:: where to put this useful function?
 const Value *getCalledValueOfIndCall(const Instruction* indCall){
 	if(const CallInst *callInst = dyn_cast<CallInst>(indCall)){
@@ -63,6 +64,7 @@ StringRef getNameOfTarget(const Value *calledVal){
 	}
 }
 
+//runOnModule is the entry of the llvm pass
 bool IndirectCallAnal::runOnModule(Module &M) {
 	DEBUG(errs() << "\nSTART [IndirectCallAnal::runOnModule] 	#######\n");
 	module = &M;
