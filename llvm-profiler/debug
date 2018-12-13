@@ -1,7 +1,0 @@
-tools/objtrace/ctxObjtraceRuntime.h:49:extern "C" void ctxObjLoopEnd (CntxID cntxID);
-tools/objtrace/ctxObjtraceRuntime.cpp:190:void ctxObjLoopEnd (CntxID cntxID) {
-lib/ObjTrace/CtxObjtrace.h:81:			Constant *ctxObjLoopEnd;
-lib/ObjTrace/CtxObjtrace.cpp:87:	ctxObjLoopEnd = M.getOrInsertFunction(
-lib/ObjTrace/CtxObjtrace.cpp:88:			"ctxObjLoopEnd",
-lib/ObjTrace/CtxObjtrace.cpp:358:					CallInst::Create(ctxObjLoopEnd, args, "", inst->getNextNode());
-lib/ObjTrace/CtxObjtrace.cpp:384:					CallInst::Create(ctxObjLoopEnd, args, "", inst);
