@@ -1,7 +1,0 @@
-tools/Qprofiler/Qprofiler.h:50:extern "C" void QproLoopEnd (CntxID cntxID);
-tools/Qprofiler/Qprofiler.cpp:150:void QproLoopEnd (CntxID cntxID) {
-lib/Qprofiler/Qprofiler.h:81:			Constant *QproLoopEnd;
-lib/Qprofiler/Qprofiler.cpp:87:	QproLoopEnd = M.getOrInsertFunction(
-lib/Qprofiler/Qprofiler.cpp:88:			"QproLoopEnd",
-lib/Qprofiler/Qprofiler.cpp:320:					CallInst::Create(QproLoopEnd, args, "", inst->getNextNode());
-lib/Qprofiler/Qprofiler.cpp:346:					CallInst::Create(QproLoopEnd, args, "", inst);
