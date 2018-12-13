@@ -10,6 +10,7 @@ LLVM_SRC_ROOT = /home/qyt/llvm-snumake/llvm
 LLVM_OBJ_ROOT = /home/qyt/llvm-snumake/llvm-objects
 
 # Set the directory root of this project's source files
+#subst in Makefile is a function of replacement, usage: subst <aa>,<bb>,<text> "you can change aa in text into bb, aa(in text)->bb"
 PROJ_SRC_ROOT := $(subst //,/,/home/qyt/llvm-snumake/plug-in/llvm-profiler-install/../llvm-profiler)
 
 # Set the root directory of this project's object files
