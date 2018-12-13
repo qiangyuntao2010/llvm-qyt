@@ -13,6 +13,6 @@ EXTRA_DIST = include
 
 #
 # Include the Master Makefile that knows how to build all.
-#
+# include means the file included will be open in this file
 include $(LEVEL)/Makefile.common
 
