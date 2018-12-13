@@ -87,6 +87,7 @@ bool IndirectCallAnal::runOnModule(Module &M) {
 	return false;
 }
 
+//indirectCalls is a list of instruction list
 void IndirectCallAnal::buildTypeBasedMatching(){
 	//first, match based on name
 	for(const Instruction *inst : indirectCalls){
